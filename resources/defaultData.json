@@ -1,0 +1,42 @@
+{
+	"Annotations": [
+		{
+			"name": "Test Annotation",
+			"coordinates": [
+				8.8898,
+				2.3864,
+				1.7288
+			],
+			"description": "Click on the annotation label to move a predefined view.\n\t\t\t\t\t\tClick on the icon to execute the specified action.\n\t\t\t\t\t\tIn this case, the action will bring you to another scene and point cloud.",
+			"cameraPosition": {
+				"x": 113.897,
+				"y": -43.579,
+				"z": 10.819
+			},
+			"cameraTarget": {
+				"x": 88.306,
+				"y": -34.481,
+				"z": 11.357
+			}
+		},
+		{
+			"name": "No Title",
+			"coordinates": [
+				-0.7557249961853021,
+				-19.840925,
+				2.7698348931884764
+			],
+			"description": "",
+			"cameraPosition": {
+				"x": 90.258,
+				"y": -35.175,
+				"z": 11.316
+			},
+			"cameraTarget": {
+				"x": 88.306,
+				"y": -34.481,
+				"z": 11.357
+			}
+		}
+	]
+}

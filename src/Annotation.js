@@ -1,6 +1,15 @@
-Potree.Annotation = class extends THREE.EventDispatcher {
+
+
+import {Action} from "./Actions.js";
+import {Utils} from "./utils.js";
+import { EventDispatcher } from "./EventDispatcher.js";
+import * as annotationNamespace from "./Potree_annot.js";
+
+export class Annotation extends EventDispatcher {
 	constructor (args = {}) {
 		super();
+
+        this.constructor.counter = (this.constructor.counter === undefined) ? 0 : this.constructor.counter + 1;
 
 		let valueOrDefault = (a, b) => {
 			if(a === null || a === undefined){
@@ -13,6 +22,7 @@ Potree.Annotation = class extends THREE.EventDispatcher {
 		this.scene = null;
 		this._title = args.title || 'No Title';
 		this._description = args.description || '';
+		this.offset = new THREE.Vector3();
 
 		if (!args.position) {
 			this.position = null;
@@ -43,7 +53,7 @@ Potree.Annotation = class extends THREE.EventDispatcher {
 		this.parent = null;
 		this.boundingBox = new THREE.Box3();
 
-		let iconClose = Potree.resourcePath + '/icons/close.svg';
+		let iconClose = exports.resourcePath + '/icons/close.svg';
 
 		this.domElement = $(`
 			<div class="annotation" oncontextmenu="return false;">
@@ -68,18 +78,26 @@ Potree.Annotation = class extends THREE.EventDispatcher {
 
 		this.clickTitle = () => {
 			if(this.hasView()){
-				this.moveHere(this.scene.getActiveCamera());
-			}
+                this.moveHere(this.scene.getActiveCamera());
+            }
+
+            //Show Annotation Values in sidebar
+            document.getElementById("annotationCoordinateX").value = this.position.toArray()[0];
+            document.getElementById("annotationCoordinateY").value = this.position.toArray()[1];
+            document.getElementById("annotationCoordinateZ").value = this.position.toArray()[2];
+            document.getElementById('annotationDescription').value = this.description;
+            document.getElementById('annotationName').value = this.title;
+
 			this.dispatchEvent({type: 'click', target: this});
 		};
 
 		this.elTitle.click(this.clickTitle);
 
 		this.actions = this.actions.map(a => {
-			if (a instanceof Potree.Action) {
+			if (a instanceof Action) {
 				return a;
 			} else {
-				return new Potree.Action(a);
+				return new Action(a);
 			}
 		});
 
@@ -113,6 +131,161 @@ Potree.Annotation = class extends THREE.EventDispatcher {
 		this.display = false;
 		//this.display = true;
 
+	}
+
+	installHandles(viewer){
+		if(this.handles !== undefined){
+			return;
+		}
+
+		let domElement = $(`
+			<div style="position: absolute; left: 300; top: 200; pointer-events: none">
+				<svg width="300" height="600">
+					<line x1="0" y1="0" x2="1200" y2="200" style="stroke: black; stroke-width:2" />
+					<circle cx="50" cy="50" r="4" stroke="black" stroke-width="2" fill="gray" />
+					<circle cx="150" cy="50" r="4" stroke="black" stroke-width="2" fill="gray" />
+				</svg>
+			</div>
+		`);
+		
+		let svg = domElement.find("svg")[0];
+		let elLine = domElement.find("line")[0];
+		let elStart = domElement.find("circle")[0];
+		let elEnd = domElement.find("circle")[1];
+
+		let setCoordinates = (start, end) => {
+			elStart.setAttribute("cx", `${start.x}`);
+			elStart.setAttribute("cy", `${start.y}`);
+
+			elEnd.setAttribute("cx", `${end.x}`);
+			elEnd.setAttribute("cy", `${end.y}`);
+
+			elLine.setAttribute("x1", start.x);
+			elLine.setAttribute("y1", start.y);
+			elLine.setAttribute("x2", end.x);
+			elLine.setAttribute("y2", end.y);
+
+			let box = svg.getBBox();
+			svg.setAttribute("width", `${box.width}`);
+			svg.setAttribute("height", `${box.height}`);
+			svg.setAttribute("viewBox", `${box.x} ${box.y} ${box.width} ${box.height}`);
+
+			let ya = start.y - end.y;
+			let xa = start.x - end.x;
+
+			if(ya > 0){
+				start.y = start.y - ya;
+			}
+			if(xa > 0){
+				start.x = start.x - xa;
+			}
+
+			domElement.css("left", `${start.x}px`);
+			domElement.css("top", `${start.y}px`);
+
+		};
+
+		$(viewer.renderArea).append(domElement);
+
+
+		let annotationStartPos = this.position.clone();
+		let annotationStartOffset = this.offset.clone();
+
+		$(this.domElement).draggable({
+			start: (event, ui) => {
+				annotationStartPos = this.position.clone();
+				annotationStartOffset = this.offset.clone();
+				$(this.domElement).find(".annotation-titlebar").css("pointer-events", "none");
+
+				console.log($(this.domElement).find(".annotation-titlebar"));
+			},
+			stop: () => {
+				$(this.domElement).find(".annotation-titlebar").css("pointer-events", "");
+			},
+			drag: (event, ui ) => {
+				let renderAreaWidth = viewer.renderer.getSize().width;
+				let renderAreaHeight = viewer.renderer.getSize().height;
+
+				let diff = {
+					x: ui.originalPosition.left - ui.position.left, 
+					y: ui.originalPosition.top - ui.position.top
+				};
+
+				let nDiff = {
+					x: -(diff.x / renderAreaWidth) * 2,
+					y: (diff.y / renderAreaWidth) * 2
+				};
+
+				let camera = viewer.scene.getActiveCamera();
+				let oldScreenPos = new THREE.Vector3()
+					.addVectors(annotationStartPos, annotationStartOffset)
+					.project(camera);
+
+				let newScreenPos = oldScreenPos.clone();
+				newScreenPos.x += nDiff.x;
+				newScreenPos.y += nDiff.y;
+
+				let newPos = newScreenPos.clone();
+				newPos.unproject(camera);
+
+				let newOffset = new THREE.Vector3().subVectors(newPos, this.position);
+				this.offset.copy(newOffset);
+			}
+		});
+
+		let updateCallback = () => {
+			let position = this.position;
+			let scene = viewer.scene;
+
+			let renderAreaWidth = viewer.renderer.getSize().width;
+			let renderAreaHeight = viewer.renderer.getSize().height;
+
+			let start = this.position.clone();
+			let end = new THREE.Vector3().addVectors(this.position, this.offset);
+
+			let toScreen = (position) => {
+				let camera = scene.getActiveCamera();
+				let screenPos = new THREE.Vector3();
+
+				let worldView = new THREE.Matrix4().multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
+				let ndc = new THREE.Vector4(position.x, position.y, position.z, 1.0).applyMatrix4(worldView);
+				// limit w to small positive value, in case position is behind the camera
+				ndc.w = Math.max(ndc.w, 0.1);
+				ndc.divideScalar(ndc.w);
+
+				screenPos.copy(ndc);
+				screenPos.x = renderAreaWidth * (screenPos.x + 1) / 2;
+				screenPos.y = renderAreaHeight * (1 - (screenPos.y + 1) / 2);
+
+				return screenPos;
+			};
+			
+			start = toScreen(start);
+			end = toScreen(end);
+
+			setCoordinates(start, end);
+
+		};
+
+		viewer.addEventListener("update", updateCallback);
+
+		this.handles = {
+			domElement: domElement,
+			setCoordinates: setCoordinates,
+			updateCallback: updateCallback
+		};
+	}
+
+	removeHandles(viewer){
+		if(this.handles === undefined){
+			return;
+		}
+
+		//$(viewer.renderArea).remove(this.handles.domElement);
+		this.handles.domElement.remove();
+		viewer.removeEventListener("update", this.handles.updateCallback);
+
+		delete this.handles;
 	}
 
 	get visible () {
@@ -207,6 +380,14 @@ Potree.Annotation = class extends THREE.EventDispatcher {
 		elDescriptionContent.append(this._description);
 	}
 
+    edit(annotation) {
+        let annotationMenuElement = document.getElementById("menu_annotations");
+        annotationMenuElement.scrollIntoView();
+
+        this.remove(annotation);
+        annotationNamespace.placeAnnotation({ editPos: [document.getElementById('annotationCoordinateX').value, document.getElementById('annotationCoordinateY').value, document.getElementById('annotationCoordinateZ').value] });
+    }
+
 	add (annotation) {
 		if (!this.children.includes(annotation)) {
 			this.children.push(annotation);
@@ -240,13 +421,18 @@ Potree.Annotation = class extends THREE.EventDispatcher {
 		return this.children.includes(annotation);
 	}
 
-	remove (annotation) {
+    remove(annotation) {
+        this.dispatchEvent({
+            'type': 'annotation_removed',
+            'annotation': annotation
+        });
+
 		if (this.hasChild(annotation)) {
 			annotation.removeAllChildren();
 			annotation.dispose();
 			this.children = this.children.filter(e => e !== annotation);
 			annotation.parent = null;
-		}
+        }
 	}
 
 	removeAllChildren() {
@@ -254,7 +440,6 @@ Potree.Annotation = class extends THREE.EventDispatcher {
 			if (child.children.length > 0) {
 				child.removeAllChildren();
 			}
-
 			this.remove(child);
 		});
 	}
@@ -361,13 +546,13 @@ Potree.Annotation = class extends THREE.EventDispatcher {
 		} else if (this.position) {
 			endTarget = this.position;
 		} else {
-			endTarget = this.boundingBox.getCenter();
+			endTarget = this.boundingBox.getCenter(new THREE.Vector3());
 		}
 
 		if (this.cameraPosition) {
 			let endPosition = this.cameraPosition;
 
-			Potree.utils.moveTo(this.scene, endPosition, endTarget);
+			Utils.moveTo(this.scene, endPosition, endTarget);
 
 			//{ // animate camera position
 			//	let tween = new TWEEN.Tween(view.position).to(endPosition, animationDuration);

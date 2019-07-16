@@ -6,7 +6,41 @@
  *
  */
 
-Potree.GeoJSONExporter = class GeoJSONExporter {
+import {Measure} from "../utils/Measure.js";
+
+export class GeoJSONExporter{
+
+    static annotationToFeatures(annotation) {
+        let coords = []
+        for (let i = 0; i < 3; i++) {
+            coords.push(parseFloat(annotation.position.toArray()[i]));
+        }
+
+        let feature = {
+            name: annotation._title,
+            coordinates: coords,
+            description: annotation._description,
+            cameraPosition: annotation.cameraPosition,
+            cameraTarget: annotation.cameraTarget
+        }
+
+        return feature;
+    }
+
+    static toStringAnnot(annotations) {
+        let Annotations = [];
+
+        let length = annotations.length;
+
+        for (let i = 0; i < length; i++) {
+            let f = GeoJSONExporter.annotationToFeatures(annotations[i]);
+
+            Annotations = Annotations.concat(f);
+        }
+
+        return Annotations;
+    }
+
 	static measurementToFeatures (measurement) {
 		let coords = measurement.points.map(e => e.position.toArray());
 
@@ -14,7 +48,6 @@ Potree.GeoJSONExporter = class GeoJSONExporter {
 
 		if (coords.length === 1) {
 			let feature = {
-				type: 'Feature',
 				geometry: {
 					type: 'Point',
 					coordinates: coords[0]
@@ -26,7 +59,6 @@ Potree.GeoJSONExporter = class GeoJSONExporter {
 			features.push(feature);
 		} else if (coords.length > 1 && !measurement.closed) {
 			let object = {
-				'type': 'Feature',
 				'geometry': {
 					'type': 'LineString',
 					'coordinates': coords
@@ -39,7 +71,6 @@ Potree.GeoJSONExporter = class GeoJSONExporter {
 			features.push(object);
 		} else if (coords.length > 1 && measurement.closed) {
 			let object = {
-				'type': 'Feature',
 				'geometry': {
 					'type': 'Polygon',
 					'coordinates': [[...coords, coords[0]]]
@@ -54,7 +85,6 @@ Potree.GeoJSONExporter = class GeoJSONExporter {
 		if (measurement.showDistances) {
 			measurement.edgeLabels.forEach((label) => {
 				let labelPoint = {
-					type: 'Feature',
 					geometry: {
 						type: 'Point',
 						coordinates: label.position.toArray()
@@ -70,7 +100,6 @@ Potree.GeoJSONExporter = class GeoJSONExporter {
 		if (measurement.showArea) {
 			let point = measurement.areaLabel.position;
 			let labelArea = {
-				type: 'Feature',
 				geometry: {
 					type: 'Point',
 					coordinates: point.toArray()
@@ -90,11 +119,11 @@ Potree.GeoJSONExporter = class GeoJSONExporter {
 			measurements = [measurements];
 		}
 
-		measurements = measurements.filter(m => m instanceof Potree.Measure);
+		measurements = measurements.filter(m => m instanceof Measure);
 
 		let features = [];
 		for (let measure of measurements) {
-			let f = Potree.GeoJSONExporter.measurementToFeatures(measure);
+			let f = GeoJSONExporter.measurementToFeatures(measure);
 
 			features = features.concat(f);
 		}
@@ -104,6 +133,7 @@ Potree.GeoJSONExporter = class GeoJSONExporter {
 			'features': features
 		};
 
-		return JSON.stringify(geojson, null, '\t');
+        return geojson;
 	}
-};
+
+}

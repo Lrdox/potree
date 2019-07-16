@@ -2,7 +2,8 @@
 // http://epsg.io/
 proj4.defs('UTM10N', '+proj=utm +zone=10 +ellps=GRS80 +datum=NAD83 +units=m +no_defs');
 
-Potree.MapView = class {
+export class MapView{
+
 	constructor (viewer) {
 		this.viewer = viewer;
 
@@ -575,7 +576,24 @@ Potree.MapView = class {
 		}
 
 		if (!this.sceneProjection) {
-			this.setSceneProjection(pointcloud.projection);
+			try {
+				this.setSceneProjection(pointcloud.projection);
+			}catch (e) {
+				console.log('Failed projection:', e);
+
+				if (pointcloud.fallbackProjection) {
+					try {
+						console.log('Trying fallback projection...');
+						this.setSceneProjection(pointcloud.fallbackProjection);
+						console.log('Set projection from fallback');
+					}catch (e) {
+						console.log('Failed fallback projection:', e);
+						return;
+					}
+				}else{
+					return;
+				};
+			}
 		}
 
 		let mapExtent = this.getMapExtent();
@@ -596,6 +614,7 @@ Potree.MapView = class {
 			constrainResolution: false
 		});
 
+		if (pointcloud.pcoGeometry.type == 'ept') return;
 		let url = pointcloud.pcoGeometry.url + '/../sources.json';
 		$.getJSON(url, (data) => {
 			let sources = data.sources;
@@ -666,13 +685,13 @@ Potree.MapView = class {
 		if (resized) {
 			this.map.updateSize();
 		}
-		
-		// 
+
+		//
 		let camera = this.viewer.scene.getActiveCamera();
 
 		let scale = this.map.getView().getResolution();
 		let campos = camera.position;
-		let camdir = camera.getWorldDirection();
+		let camdir = camera.getWorldDirection(new THREE.Vector3());
 		let sceneLookAt = camdir.clone().multiplyScalar(30 * scale).add(campos);
 		let geoPos = camera.position;
 		let geoLookAt = sceneLookAt;
@@ -698,4 +717,5 @@ Potree.MapView = class {
 	set sourcesVisible (value) {
 		this.getSourcesLayer().setVisible(value);
 	}
-};
+
+}

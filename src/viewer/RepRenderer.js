@@ -154,7 +154,7 @@ class RepRenderer {
 
 		// COLOR & DEPTH PASS
 		for (let pointcloud of viewer.scene.pointclouds) {
-			let octreeSize = pointcloud.pcoGeometry.boundingBox.getSize().x;
+			let octreeSize = pointcloud.pcoGeometry.boundingBox.getSize(new THREE.Vector3()).x;
 
 			let material = pointcloud.material;
 			material.weighted = false;
@@ -325,7 +325,14 @@ class RepRenderer {
 		viewer.renderer.setViewport(viewer.renderer.domElement.clientWidth - viewer.navigationCube.width, 
 									viewer.renderer.domElement.clientHeight - viewer.navigationCube.width, 
 									viewer.navigationCube.width, viewer.navigationCube.width);
-		viewer.renderer.render(viewer.navigationCube, viewer.navigationCube.camera);		
+		viewer.renderer.render(viewer.navigationCube, viewer.navigationCube.camera);	
+		
+		viewer.renderer.setViewport(viewer.renderer.domElement.clientWidth - viewer.promotionCube.width, 
+									viewer.renderer.domElement.clientHeight - viewer.promotionCube.width, 
+									viewer.promotionCube.width, viewer.promotionCube.width);
+		viewer.renderer.render(viewer.promotionCube, viewer.promotionCube.camera);
+
+		
 		viewer.renderer.setViewport(0, 0, viewer.renderer.domElement.clientWidth, viewer.renderer.domElement.clientHeight);
 
 		//

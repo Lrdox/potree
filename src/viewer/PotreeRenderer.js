@@ -1,12 +1,12 @@
 
-class PotreeRenderer {
+export class PotreeRenderer {
+
 	constructor (viewer) {
 		this.viewer = viewer;
-	};
+	}
  
 	render(){
 		const viewer = this.viewer;
-		let query = Potree.startQuery('render', viewer.renderer.getContext());
 
 		viewer.dispatchEvent({type: "render.pass.begin",viewer: viewer});
 
@@ -36,14 +36,12 @@ class PotreeRenderer {
 			pointcloud.material.useEDL = false;
 		}
 		
-		//let queryPC = Potree.startQuery("PointCloud", viewer.renderer.getContext());
 		let activeCam = viewer.scene.getActiveCamera();
 		//viewer.renderer.render(viewer.scene.scenePointCloud, activeCam);
 		
-		viewer.pRenderer.render(viewer.scene.scenePointCloud, activeCam);
-		
-		
-		//Potree.endQuery(queryPC, viewer.renderer.getContext());
+		viewer.pRenderer.render(viewer.scene.scenePointCloud, activeCam, null, {
+			clipSpheres: viewer.scene.volumes.filter(v => (v instanceof Potree.SphereVolume)),
+		});
 		
 		// render scene
 		viewer.renderer.render(viewer.scene.scene, activeCam);
@@ -63,15 +61,22 @@ class PotreeRenderer {
 		viewer.dispatchEvent({type: "render.pass.perspective_overlay",viewer: viewer});
 		
 		viewer.renderer.render(viewer.transformationTool.scene, activeCam);
-
+		
+		
 		viewer.renderer.setViewport(viewer.renderer.domElement.clientWidth - viewer.navigationCube.width, 
-									viewer.renderer.domElement.clientHeight - viewer.navigationCube.width, 
+									0, 
 									viewer.navigationCube.width, viewer.navigationCube.width);
-		viewer.renderer.render(viewer.navigationCube, viewer.navigationCube.camera);		
+		viewer.renderer.render(viewer.navigationCube, viewer.navigationCube.camera);	
+		
+		viewer.renderer.setViewport(viewer.renderer.domElement.clientWidth - viewer.promotionCube.width, 
+									viewer.renderer.domElement.clientHeight - viewer.promotionCube.width, 
+									viewer.promotionCube.width, viewer.promotionCube.width);
+		viewer.renderer.render(viewer.promotionCube, viewer.promotionCube.camera);		
+		
+		
 		viewer.renderer.setViewport(0, 0, viewer.renderer.domElement.clientWidth, viewer.renderer.domElement.clientHeight);
 
 		viewer.dispatchEvent({type: "render.pass.end",viewer: viewer});
-		
-		Potree.endQuery(query, viewer.renderer.getContext());
-	};
-};
+	}
+
+}

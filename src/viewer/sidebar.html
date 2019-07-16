@@ -8,7 +8,7 @@
 			<span style="margin: 0px 3px; color: #9AA1A4"> - </span> 
 			<a href="https://github.com/potree/potree" target="_blank">github</a>
 			<span style="margin: 0px 3px; color: #9AA1A4"> - </span> 
-			<a href="https://twitter.com/m_schuetz" target="_blank">twitter</a>
+			<a href="http://panorama.ulb.ac.be/" target="_blank">panorama</a>
 			<span style="flex-grow: 1"></span>
 			<span id="potree_version_number" style="color: #9AA1A4; font-size: 80%; font-weight: 100"></span>
 		</span>
@@ -24,33 +24,33 @@
 				<li><span data-i18n="appearance.nb_max_pts"></span>: <span id="lblPointBudget"></span> <div id="sldPointBudget"></div></li>
 				<li><span data-i18n="appearance.field_view"></span>: <span id="lblFOV"></span><div id="sldFOV"></div></li>
 
-				<div class="divider"><span>Eye-Dome-Lighting</span></div>
+				<li><span data-i18n="appearance.splat_quality"></span>
+					<selectgroup id="splat_quality_options">
+						<option id="splat_quality_options_standard" value="standard"><span data-i18n="appearance.splat_quality_standard"></option>
+						<option id="splat_quality_options_hq" value="hq"><span data-i18n="appearance.splat_quality_hq"></option>
+					</selectgroup>
+				</li>				
+				
+				<div class="divider"><span data-i18n="appearance.eye_dome_lighting"></div>
 
 				<li><label><input type="checkbox" id="chkEDLEnabled"/><span data-i18n="appearance.edl_enable"></span></label></li>
 				<li><span data-i18n="appearance.edl_radius"></span>: <span id="lblEDLRadius"></span><div id="sldEDLRadius"></div></li>
 				<li><span data-i18n="appearance.edl_strength"></span>: <span id="lblEDLStrength"></span><div id="sldEDLStrength"></div></li>
 				
-				<div class="divider"><span>Background</span></div>
+				<div class="divider"><span data-i18n="appearance.background"></div>
 
 				<li>
 					<selectgroup id="background_options">
-						<option id="background_options_skybox" value="skybox">Skybox</option>
-						<option id="background_options_gradient" value="gradient">Gradient</option>
-						<option id="background_options_black" value="black">Black</option>
-						<option id="background_options_white" value="white">White</option>
-						<option id="background_options_none" value="null">None</option>
+						<option id="background_options_skybox" value="skybox"><span data-i18n="appearance.background_skybox"></option>
+						<option id="background_options_gradient" value="gradient"><span data-i18n="appearance.background_gradient"></option>
+						<option id="background_options_black" value="black"><span data-i18n="appearance.background_black"></option>
+						<option id="background_options_white" value="white"><span data-i18n="appearance.background_white"></option>
+						<option id="background_options_none" value="null"><span data-i18n="appearance.background_none"></option>
 					</selectgroup>
 				</li>
 
-				<div class="divider"><span>Other</span></div>
+				<div class="divider"><span data-i18n="appearance.octree"></span></div>
 
-				<li>
-					<selectgroup id="splat_quality_options">
-						<option id="splat_quality_options_standard" value="standard">Standard</option>
-						<option id="splat_quality_options_hq" value="hq">High Quality</option>
-					</selectgroup>
-				</li>
-				
 				<li><span data-i18n="appearance.min_node_size"></span>: <span id="lblMinNodeSize"></span><div id="sldMinNodeSize"></div></li>
 				<li><label><input id="show_bounding_box" type="checkbox" /><span data-i18n="appearance.box"></span></label></li>
 				<li><label><input id="set_freeze" type="checkbox" /><span data-i18n="appearance.freeze"></span></label></li>
@@ -62,57 +62,162 @@
 		<h3 id="menu_tools"><span data-i18n="tb.tools_opt"></span></h3>
 		<div class="pv-menu-list">
 
-			<div class="divider" style="padding: 10px 0px 15px 0px"><span>Measurement</span></div>
+			<div class="divider" style="padding: 10px 0px 15px 0px"><span data-i18n="tt.measurement"></span></div>
 
-			<li id="tools"></li>
+			<center><li id="tools"></li></center>
 
-			<div class="divider" style="padding: 10px 0px 15px 0px"><span>Clipping</span></div>
+			<div class="divider" style="padding: 10px 0px 15px 0px"><span data-i18n="tt.clipping"></span></div>
 
-			<li id="clipping_tools"></li>
+			<center><li id="clipping_tools"></li></center>
 
-			<li>
+			<li><span data-i18n="tt.cliptask"></span>
 				<selectgroup id="cliptask_options">
-					<option id="cliptask_options_none" value="NONE">None</option>
-					<option id="cliptask_options_highlight" value="HIGHLIGHT">Highlight</option>
-					<option id="cliptask_options_show_inside" value="SHOW_INSIDE">Inside</option>
-					<option id="cliptask_options_show_outside" value="SHOW_OUTSIDE">Outside</option>
-				</selectgroup>
-			</li>
-
-			<li>
-				<selectgroup id="clipmethod_options">
-					<option id="clipmethod_options_any" value="INSIDE_ANY">Inside Any</option>
-					<option id="clipmethod_options_all" value="INSIDE_ALL">Inside All</option>
+					<option id="cliptask_options_none" value="NONE"><span data-i18n="tt.cliptask_none"></option>
+					<option id="cliptask_options_highlight" value="HIGHLIGHT"><span data-i18n="tt.cliptask_highlight"></option>
+					<option id="cliptask_options_show_inside" value="SHOW_INSIDE"><span data-i18n="tt.cliptask_inside"></option>
+					<option id="cliptask_options_show_outside" value="SHOW_OUTSIDE"><span data-i18n="tt.cliptask_outside"></option>
 				</selectgroup>
 			</li>
 			
-			<div class="divider" style="padding: 10px 0px 15px 0px"><span>Navigation</span></div>
+			<li><span data-i18n="tt.clipmethod"></span>
+				<selectgroup id="clipmethod_options">
+					<option id="clipmethod_options_any" value="INSIDE_ANY"><span data-i18n="tt.clipmethod_any"></option>
+					<option id="clipmethod_options_all" value="INSIDE_ALL"><span data-i18n="tt.clipmethod_all"></option>
+				</selectgroup>
+			</li>
+			
+			<div class="divider" style="padding: 10px 0px 15px 0px"><span data-i18n="tt.navigation"></span></div>
+			
+			<center><li id="navigation"></li></center>			
 
-			<li id="navigation"></li>
+			<li><span data-i18n="tt.camera_projection_options"></span>
+				<selectgroup id="camera_projection_options">
+					<option id="camera_projection_options_perspective" value="PERSPECTIVE"><span data-i18n="tt.perspective_camera_control"></option>
+					<option id="camera_projection_options_orthigraphic" value="ORTHOGRAPHIC"><span data-i18n="tt.orthographic_camera_control"></option>
+				</selectgroup>
+			</li>
+			
+			<div class="divider" style="padding: 10px 0px 15px 0px"><span data-i18n="tt.units"></span></div>
+			
+			<li>
+				<selectgroup id="lengthunit_options">
+					<option id="lengthunit_options_cm" value="cm"><span data-i18n="tt.units_centimeter"></option>
+					<option id="lengthunit_options_m" value="m"><span data-i18n="tt.units_meter"></option>
+					<option id="lengthunit_options_ft" value="ft"><span data-i18n="tt.units_foot"></option>
+					<option id="lengthunit_options_in" value="in"><span data-i18n="tt.units_inch"></option>
+				</selectgroup>
+			</li>
 
 			<li><span data-i18n="appearance.move_speed"></span>: <span id="lblMoveSpeed"></span><div id="sldMoveSpeed"></div></li>
+		</div>
+		
+		<!-- ANNOTATIONS -->
+		<h3 id="menu_annotations"><span data-i18n="tb.annotations_opt"></span></h3>
+		<div class="pv-menu-list">
+
+			<div class="divider" style="padding: 10px 0px 15px 0px"><span data-i18n="annotations.add_annotation"/></div>
+			
+			<div class="annotationForm" id="annotationForm">
+				<form id="annotationFormform" class="form-container" action ="#">
+				
+				<label for="annotationName"><span data-i18n="annotations.annotation_name"/></label>
+				<input type="text" name="annotationName" id="annotationName" size="17"/>
+				<br/>
+				
+				<label for="annotationSetting"><span data-i18n="annotations.annotation_setting"/></label>
+				<input type="checkbox" name="annotationSetting" id="annotationSetting"/>
+				<br/>
+				
+				<br/>
+				<center><label for="annotationCoordinates"><span data-i18n="annotations.annotation_coordinates"/></label></center>
+				<h4 id="annotationCoordinatesInput">   &emsp; &nbsp; x &emsp; &emsp; &emsp; y &emsp; &emsp; &emsp; z</h4>
+
+				<center>
+				<input type="number" name="annotationCoordinateX" id="annotationCoordinateX" value="" step = any style="width: 4em;"/> 
+				<input type="number" name="annotationCoordinateY" id="annotationCoordinateY" value="" step = any style="width: 4em;"/> 
+				<input type="number" name="annotationCoordinateZ" id="annotationCoordinateZ" value="" step = any style="width: 4em;"/> &nbsp;
+				<button id="annotationButton"style="border-color:transparent;background-color:transparent;" type="button" /> 
+				</center>
+				
+				<br/>
+				<button id="annotationReset" class="centerStyle" type="button">Clear</button> 
+				<br/>
+
+				<textarea id="annotationDescription" rows="4" cols="25" data-i18n="[placeholder]annotations.annotation_description" class="centerStyle"/>
+				<br/>
+				 
+				<button id="annotationCreate" class="centerStyle" type="button"><span data-i18n="annotations.annotation_creation"/></button> 
+
+				</form>
+			</div>
 		</div>
 
 		<!-- SCENE -->
 		<h3 id="menu_scene"><span data-i18n="tb.scene_opt"></span></h3>
 		<div class="pv-menu-list">
 
-			<div id="scene_export"></div>
+            <div id="scene_import"></div>
 
-			<div class="divider" style="padding: 10px 0px 15px 0px"><span>Objects</span></div>
+			<div id="scene_export"></div>
+			
+			<div id="screenshot"></div>
+
+			<div class="divider" style="padding: 10px 0px 10px 0px"><span data-i18n="scene.objects"></span></div>
 
 			<div id="scene_objects"></div>
 
-			<div class="divider" style="padding: 10px 0px 15px 0px"><span>Properties</span></div>
+			<div class="divider" style="padding: 10px 0px 10px 0px"><span data-i18n="scene.properties"></span></div>
 
 			<div id="scene_object_properties"></div>
 		</div>
 
-		<!-- Classification -->
-		<h3 id="menu_classification"><span data-i18n="tb.classification_filter_opt"></span></h3>
-		<div>
-			<ul id="classificationList" class="pv-menu-list"></ul>
-		</div>
+		<!-- Classification --> 
+		<!-- <h3 id="menu_filters"><span data-i18n="tb.filters_opt"></span></h3> -->
+		<!-- <div> -->
+
+			<!-- <div class="divider" style="padding: 10px 0px 15px 0px"><span>Classification</span></div> -->
+
+			<!-- <ul id="classificationList" class="pv-menu-list"></ul> -->
+
+			<!-- <div class="divider" style="padding: 10px 0px 15px 0px"><span>Returns</span></div> -->
+
+			<!-- <div id="return_filter_panel"> -->
+				<!-- <ul class="pv-menu-list"> -->
+					
+					<!-- <li><span data-i18n="filters.return_number"></span>: <span id="lblReturnNumber"></span> <div id="sldReturnNumber"></div></li> -->
+					<!-- <li><span data-i18n="filters.number_of_returns"></span>: <span id="lblNumberOfReturns"></span> <div id="sldNumberOfReturns"></div></li> -->
+
+				<!-- </ul> -->
+			<!-- </div> -->
+
+			<!-- <div class="divider" style="padding: 10px 0px 15px 0px"><span>GPS Time</span></div> -->
+
+			<!-- <div id="gpstime_filter_panel"> -->
+
+				<!-- <ul class="pv-menu-list"> -->
+					
+					<!-- <!-- <li> -->
+						<!-- <span style="display: flex"> -->
+							<!-- <span style="flex: 0.5; padding: 2px;"> -->
+								<!-- <label for="spnGPSMin">Min:</label> -->
+								<!-- <input id="spnGPSMin" type="" step="0.01" value="0" min="0" style="width: 90%"> -->
+							<!-- </span> -->
+							<!-- <span style="flex: 0.5; padding: 2px;"> -->
+								<!-- <label for="spnGPSMax">Max:</label> -->
+								<!-- <input id="spnGPSMax" type="" step="0.01" value="1" min="0" style="width: 90%"> -->
+							<!-- </span> -->
+						<!-- </span> -->
+					<!-- </li> -->
+					<!-- <!-- <li><span data-i18n="filters.gps_time"></span>: <span id="lblGPSTime"></span> <div id="sldGPSTime"></div></li> -->
+					<!-- <li> -->
+						<!-- <span data-i18n="filters.gps_time"></span>: <span id="lblGPSTime"></span> -->
+						<!-- <span id="spnGPSTime"></span> -->
+					<!-- </li> -->
+
+				<!-- </ul> -->
+
+			<!-- </div> -->
+		<!-- </div> -->
 		
 		<!-- ABOUT -->
 		<h3 id="menu_about"><span data-i18n="tb.about_opt"></span></h3>
@@ -123,42 +228,8 @@
 				</li>
 				<li>Author: <a href="mailto:mschuetz@potree.org">Markus Sch&uuml;tz</a></li>
 				<li>License: <a target="_blank" href="http://potree.org/wp/potree_license/">FreeBSD (2-clause BSD)<a></li>
-				<li>Libraries:
-					<ul>
-						<li><a target="_blank" href="http://threejs.org/">three.js</a></li>
-						<li><a target="_blank" href="https://jquery.com/">Jquery</a></li>
-						<li><a target="_blank" href="http://www.laszip.org/">laszip</a></li>
-						<li><a target="_blank" href="https://github.com/verma/plasio">Plas.io (laslaz) </a></li>
-						<li><a target="_blank" href="http://openlayers.org/">OpenLayers3</a></li>
-						<li><a target="_blank" href="http://proj4js.org/">proj4js</a></li>
-						<li><a target="_blank" href="https://github.com/tweenjs/tween.js/">tween</a></li>
-						<li><a target="_blank" href="https://github.com/i18next/i18next/">i18next</a></li>
-					</ul>
-				</li>
-				<li>Donators:
-					<ul>
-						<li><a target="_blank" href="http://rapidlasso.com/">rapidlasso</a></li>
-						<li><a target="_blank" href="https://georepublic.info/en/">georepublic</a></li>
-						<li><a target="_blank" href="http://sitn.ne.ch/">sitn</a></li>
-						<li><a target="_blank" href="http://www.veesus.com/veesus/index.php">Veesus</a></li>
-						<li><a target="_blank" href="http://sigeom.ch/">sigeom sa</a></li>
-						<li><a target="_blank" href="http://archpro.lbg.ac.at/">LBI ArchPro</a></li>
-					</ul>
-				</li>
-				<li>Credits:
-					<ul>
-						<li><a target="_blank" href="https://www.cg.tuwien.ac.at/staff/MichaelWimmer.html">Michael Wimmer</a> & 
-							<a target="_blank" href="https://www.cg.tuwien.ac.at/staff/ClausScheiblauer.html">Claus Scheiblauer</a></li>
-						<li><a target="_blank" href="https://www.cg.tuwien.ac.at/">TU Wien, Insitute of Computer Graphics and Algorithms</a></li>
-						<li><a target="_blank" href="https://harvest4d.org/">Harvest4D</a></li>
-						<li><a target="_blank" href="http://rapidlasso.com/">rapidlasso</a></li>
-						<li><a target="_blank" href="https://georepublic.info/en/">georepublic</a></li>
-						<li><a target="_blank" href="http://hobu.co/">Howard Butler, Uday Verma, Connor Manning</a></li>
-						<li><a target="_blank" href="http://www.danielgm.net/cc/">Cloud Compare</a></li>
-						<li><a target="_blank" href="http://sitn.ne.ch/">sitn</a></li>
-					</ul>
-				</li>
-			
+				
+				<li><center><label><input id="view_logo" type="checkbox" checked /><span data-i18n="tb.logo_cube"></span></label></center></li>				
 			</ul>
 		</div>
 	</div>
