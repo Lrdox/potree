@@ -3079,10 +3079,8 @@
 	            this.viewer.removeEventListener('cancel_insertions', cancel.callback);
 	        };
 
-	        if (this.annotationMeasure.maxMarkers > 0) {
-	            this.viewer.addEventListener('cancel_insertions', cancel.callback);
-	            domElement.addEventListener('mouseup', insertionCallback, true);
-	        }
+	        this.viewer.addEventListener('cancel_insertions', cancel.callback);
+	        domElement.addEventListener('mouseup', insertionCallback, true);
 
 	        if (args.create == true) {
 	            this.viewer.scene.addAnnotation(args.position,
@@ -3118,17 +3116,7 @@
 			this.light.position.copy(camera.position);
 
 			// make size independent of distance
-			for (let measure of measurements) {
-				measure.update();
-				
-	            // spheres
-	            for (let sphere of measure.spheres) {
-	                let distance = camera.position.distanceTo(sphere.getWorldPosition(new THREE.Vector3()));
-	                let pr = Utils.projectedRadius(1, camera, distance, clientWidth, clientHeight);
-	                let scale = (15 / pr);
-	                sphere.scale.set(scale, scale, scale);
-	            }
-			}	
+
 		}
 
 		render(){
@@ -17973,6 +17961,10 @@ void main() {
 	    }
 
 	    editAnnotation(annotation) {
+	        document.getElementById("annotationFormform").reset();
+	        document.getElementById('annotationCoordinateX').setAttribute('value', annotation.position.toArray()[0]);
+	        document.getElementById('annotationCoordinateY').setAttribute('value', annotation.position.toArray()[1]);
+	        document.getElementById('annotationCoordinateZ').setAttribute('value', annotation.position.toArray()[2]);
 	        document.getElementById("annotationName").value = annotation._title;
 	        document.getElementById("annotationDescription").value = annotation._description;
 	        this.annotations.edit(annotation);
@@ -21360,46 +21352,47 @@ ENDSEC
 	                    `Copied value to clipboard: <br>'${msg}'`,
 	                    { duration: 3000 });
 	            });
+	            if (this.annotation.cameraPosition && this.annotation.cameraTarget) {
+	                //Camera Position Show and Copy
+	                let cameraPosition = this.annotation.cameraPosition.toArray();
+	                let cameraPositionX = parseFloat(cameraPosition[0]).toFixed(4);
+	                let cameraPositionY = parseFloat(cameraPosition[1]).toFixed(4);
+	                let cameraPositionZ = parseFloat(cameraPosition[2]).toFixed(4);
 
-	            //Camera Position Show and Copy
-	            let cameraPosition = this.annotation.cameraPosition.toArray();
-	            let cameraPositionX = parseFloat(cameraPosition[0]).toFixed(4);
-	            let cameraPositionY = parseFloat(cameraPosition[1]).toFixed(4);
-	            let cameraPositionZ = parseFloat(cameraPosition[2]).toFixed(4);
+	                this.elContent.find("#camera_position_x").html(cameraPositionX);
+	                this.elContent.find("#camera_position_y").html(cameraPositionY);
+	                this.elContent.find("#camera_position_z").html(cameraPositionZ);
 
-	            this.elContent.find("#camera_position_x").html(cameraPositionX);
-	            this.elContent.find("#camera_position_y").html(cameraPositionY);
-	            this.elContent.find("#camera_position_z").html(cameraPositionZ);
+	                let elCopyAnnotationCameraPosition = this.elContent.find("img[name=copyCameraPosition]");
+	                elCopyAnnotationCameraPosition.click(() => {
+	                    let msg = [cameraPositionX, cameraPositionY, cameraPositionZ];
+	                    Utils.clipboardCopy(msg);
 
-	            let elCopyAnnotationCameraPosition = this.elContent.find("img[name=copyCameraPosition]");
-	            elCopyAnnotationCameraPosition.click(() => {
-	                let msg = [cameraPositionX, cameraPositionY, cameraPositionZ];
-	                Utils.clipboardCopy(msg);
+	                    this.viewer.postMessage(
+	                        `Copied value to clipboard: <br>'${msg}'`,
+	                        { duration: 3000 });
+	                });
 
-	                this.viewer.postMessage(
-	                    `Copied value to clipboard: <br>'${msg}'`,
-	                    { duration: 3000 });
-	            });
+	                //Camera Target Show and Copy
+	                let cameraTarget = this.annotation.cameraTarget.toArray();
+	                let cameraTargetX = parseFloat(cameraTarget[0]).toFixed(4);
+	                let cameraTargetY = parseFloat(cameraTarget[1]).toFixed(4);
+	                let cameraTargetZ = parseFloat(cameraTarget[2]).toFixed(4);
 
-	            //Camera Target Show and Copy
-	            let cameraTarget = this.annotation.cameraTarget.toArray();
-	            let cameraTargetX = parseFloat(cameraTarget[0]).toFixed(4);
-	            let cameraTargetY = parseFloat(cameraTarget[1]).toFixed(4);
-	            let cameraTargetZ = parseFloat(cameraTarget[2]).toFixed(4);
+	                this.elContent.find("#camera_target_x").html(cameraTargetX);
+	                this.elContent.find("#camera_target_y").html(cameraTargetY);
+	                this.elContent.find("#camera_target_z").html(cameraTargetZ);
 
-	            this.elContent.find("#camera_target_x").html(cameraTargetX);
-	            this.elContent.find("#camera_target_y").html(cameraTargetY);
-	            this.elContent.find("#camera_target_z").html(cameraTargetZ);
+	                let elCopyAnnotationCameraTarget = this.elContent.find("img[name=copyCameraTarget]");
+	                elCopyAnnotationCameraTarget.click(() => {
+	                    let msg = [cameraTargetX, cameraTargetY, cameraTargetZ];
+	                    Utils.clipboardCopy(msg);
 
-	            let elCopyAnnotationCameraTarget = this.elContent.find("img[name=copyCameraTarget]");
-	            elCopyAnnotationCameraTarget.click(() => {
-	                let msg = [cameraTargetX, cameraTargetY, cameraTargetZ];
-	                Utils.clipboardCopy(msg);
-
-	                this.viewer.postMessage(
-	                    `Copied value to clipboard: <br>'${msg}'`,
-	                    { duration: 3000 });
-	            });
+	                    this.viewer.postMessage(
+	                        `Copied value to clipboard: <br>'${msg}'`,
+	                        { duration: 3000 });
+	                });
+	            }
 	        }
 	        else {
 	            let tableContainer = this.elContent.find('.annotationTableContainer');

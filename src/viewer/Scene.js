@@ -328,6 +328,10 @@ export class Scene extends EventDispatcher {
     }
 
     editAnnotation(annotation) {
+        document.getElementById("annotationFormform").reset();
+        document.getElementById('annotationCoordinateX').setAttribute('value', annotation.position.toArray()[0]);
+        document.getElementById('annotationCoordinateY').setAttribute('value', annotation.position.toArray()[1]);
+        document.getElementById('annotationCoordinateZ').setAttribute('value', annotation.position.toArray()[2]);
         document.getElementById("annotationName").value = annotation._title;
         document.getElementById("annotationDescription").value = annotation._description;
         this.annotations.edit(annotation);
