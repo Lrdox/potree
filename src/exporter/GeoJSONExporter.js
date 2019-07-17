@@ -82,35 +82,6 @@ export class GeoJSONExporter{
 			features.push(object);
 		}
 
-		if (measurement.showDistances) {
-			measurement.edgeLabels.forEach((label) => {
-				let labelPoint = {
-					geometry: {
-						type: 'Point',
-						coordinates: label.position.toArray()
-					},
-					properties: {
-						distance: label.text
-					}
-				};
-				features.push(labelPoint);
-			});
-		}
-
-		if (measurement.showArea) {
-			let point = measurement.areaLabel.position;
-			let labelArea = {
-				geometry: {
-					type: 'Point',
-					coordinates: point.toArray()
-				},
-				properties: {
-					area: measurement.areaLabel.text
-				}
-			};
-			features.push(labelArea);
-		}
-
 		return features;
 	}
 
@@ -128,12 +99,7 @@ export class GeoJSONExporter{
 			features = features.concat(f);
 		}
 
-		let geojson = {
-			'type': 'FeatureCollection',
-			'features': features
-		};
-
-        return geojson;
+        return features;
 	}
 
 }

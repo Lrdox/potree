@@ -3115,8 +3115,18 @@
 
 			this.light.position.copy(camera.position);
 
-			// make size independent of distance
-
+			for (let measure of measurements) {
+	            measure.update();
+	            console.log(measure);
+				
+	            // spheres
+	            for (let sphere of measure.spheres) {
+	                let distance = camera.position.distanceTo(sphere.getWorldPosition(new THREE.Vector3()));
+	                let pr = Utils.projectedRadius(1, camera, distance, clientWidth, clientHeight);
+	                let scale = (15 / pr);
+	                sphere.scale.set(scale, scale, scale);
+	            }
+			}	
 		}
 
 		render(){
@@ -19903,35 +19913,6 @@ void main() {
 				features.push(object);
 			}
 
-			if (measurement.showDistances) {
-				measurement.edgeLabels.forEach((label) => {
-					let labelPoint = {
-						geometry: {
-							type: 'Point',
-							coordinates: label.position.toArray()
-						},
-						properties: {
-							distance: label.text
-						}
-					};
-					features.push(labelPoint);
-				});
-			}
-
-			if (measurement.showArea) {
-				let point = measurement.areaLabel.position;
-				let labelArea = {
-					geometry: {
-						type: 'Point',
-						coordinates: point.toArray()
-					},
-					properties: {
-						area: measurement.areaLabel.text
-					}
-				};
-				features.push(labelArea);
-			}
-
 			return features;
 		}
 
@@ -19949,12 +19930,7 @@ void main() {
 				features = features.concat(f);
 			}
 
-			let geojson = {
-				'type': 'FeatureCollection',
-				'features': features
-			};
-
-	        return geojson;
+	        return features;
 		}
 
 	}
@@ -23098,22 +23074,90 @@ ENDSEC
 
 	            elImport.append(`
                 Import </br>
-                <a title="Upload All Elements" href="#" id="jsonUpload"><img name="geojson_export_button" src="${geoJSONIcon}" class="button-icon" style="height: 24px" /></a>
+                <a title="Upload Annotations" href="#" id="jsonUpload"><img name="geojson_import_button" src="${geoJSONIcon}" class="button-icon" style="height: 24px" /></a>
+                <a title="Upload Measurements" href="#" id="jsonUploadMeas"><img name="geojson_importMeas_button" src="${geoJSONIcon}" class="button-icon" style="height: 24px"/></a>
             `);
 
-	            let elUploadJSON = elImport.find("img[name=geojson_export_button]").parent();
+	           let elUploadJSON = elImport.find("img[name=geojson_import_button]").parent();
 	            elUploadJSON.click((event) => {
 
 	                let url = "http://localhost:1234/build/potree/resources/defaultData.json";
 	                $.getJSON(url, function (importedJson) {
-	                    for (var i = 0; i < importedJson.Annotations.length; i++) {
-	                        viewer.scene.addAnnotation(importedJson.Annotations[i].coordinates,
-	                            {
-	                                title: importedJson.Annotations[i].name,
-	                                cameraPosition: new THREE.Vector3(importedJson.Annotations[i].cameraPosition.x, importedJson.Annotations[i].cameraPosition.y, importedJson.Annotations[i].cameraPosition.z),
-	                                cameraTarget: new THREE.Vector3(importedJson.Annotations[i].cameraTarget.x, importedJson.Annotations[i].cameraTarget.y, importedJson.Annotations[i].cameraTarget.z),
-	                                description: importedJson.Annotations[i].description
-	                            });
+	                    if (importedJson.Annotations.length > 0) {
+	                        for (var i = 0; i < importedJson.Annotations.length; i++) 
+	                            viewer.scene.addAnnotation(importedJson.Annotations[i].coordinates,
+	                                {
+	                                    title: importedJson.Annotations[i].name,
+	                                    cameraPosition: new THREE.Vector3(importedJson.Annotations[i].cameraPosition.x, importedJson.Annotations[i].cameraPosition.y, importedJson.Annotations[i].cameraPosition.z),
+	                                    cameraTarget: new THREE.Vector3(importedJson.Annotations[i].cameraTarget.x, importedJson.Annotations[i].cameraTarget.y, importedJson.Annotations[i].cameraTarget.z),
+	                                    description: importedJson.Annotations[i].description
+	                                });
+	                    }else {
+	                        console.info("There aren't any annotations to be uploaded");
+	                    }
+	                });
+	            });
+
+	            let elUploadJSONMeasOnly = elImport.find("img[name=geojson_importMeas_button]").parent();
+	            elUploadJSONMeasOnly.click((event) => {
+	                let url = "http://localhost:1234/build/potree/resources/defaultDataMeasOnly.json";
+	                $.getJSON(url, function (importedJson) {
+	                    let measure = new Measure();
+	                    console.log(importedJson.Measurements);
+	                    for (var i = 0; i < importedJson.Measurements.length; i++) {
+	                        switch (importedJson.Measurements[i].geometry.type) {
+	                            case "Point":
+	                                // SINGLE POINT MEASURE
+	                                measure = new Measure();
+	                                measure.name = importedJson.Measurements[i].properties.name;
+	                                measure.showDistances = false;
+	                                measure.showCoordinates = true;
+	                                measure.maxMarkers = 1;
+	                                measure.lengthUnitDisplay = viewer.lengthUnitDisplay;
+
+	                                measure.addMarker(new THREE.Vector3(importedJson.Measurements[i].geometry.coordinates[0], importedJson.Measurements[i].geometry.coordinates[1], importedJson.Measurements[i].geometry.coordinates[2]));
+
+	                                viewer.scene.addMeasurement(measure);
+	                                break;
+	                            case "LineString":
+	                                // DISTANCE MEASURE
+	                                measure = new Measure();
+	                                measure.name = importedJson.Measurements[i].properties.name;
+	                                measure.closed = false;
+	                                measure.lengthUnitDisplay = viewer.lengthUnitDisplay;
+
+	                                for (var j = 0; j < importedJson.Measurements[i].geometry.coordinates.length; j++) {
+	                                    measure.addMarker(new THREE.Vector3(importedJson.Measurements[i].geometry.coordinates[j][0], importedJson.Measurements[i].geometry.coordinates[j][1], importedJson.Measurements[i].geometry.coordinates[j][2]));
+	                                }
+	                                viewer.scene.addMeasurement(measure);
+	                                break;
+	                            case "Polygon":
+	                                // ANGLE and AREA MEASURE
+	                                measure = new Measure();
+	                                measure.name = importedJson.Measurements[i].properties.name;
+	                                if (measure.name == "Angle") {
+	                                    measure.showDistances = false;
+	                                    measure.showAngles = true;
+	                                    measure.showArea = false;
+	                                }else if (measure.name == "Area") {
+	                                    measure.showDistances = true;
+	                                    measure.showArea = true;
+	                                    measure.showAngles = false;
+
+	                                }
+	                                measure.closed = true;
+	                                measure.lengthUnitDisplay = viewer.lengthUnitDisplay;
+
+	                                for (var j = 0; j < (importedJson.Measurements[i].geometry.coordinates[0].length - 1); j++) {
+	                                    measure.addMarker(new THREE.Vector3(parseFloat(importedJson.Measurements[i].geometry.coordinates[0][j][0]), parseFloat(importedJson.Measurements[i].geometry.coordinates[0][j][1]), parseFloat(importedJson.Measurements[i].geometry.coordinates[0][j][2])));
+	                                }
+
+	                                viewer.scene.addMeasurement(measure);
+	                                break;
+	                            default:
+	                                console.info("There aren't any measurements to be uploaded");
+	                                return false;
+	                        } 
 	                    }
 	                });
 	            });
@@ -23123,7 +23167,7 @@ ENDSEC
 	            elExport.append(`
 				Export: </br>
 				<a title="Download All Elements" href="#" id="jsonDownload"><img name="geojson_export_button" src="${geoJSONIcon}" class="button-icon" style="height: 24px" /></a>
-                <a title="Download Measurements Only" href="#" id="jsonDownloadMeasOnly"><img name="geojson_export_button" src="${geoJSONIcon}" class="button-icon" style="height: 24px" /></a>
+                <a title="Download Measurements" href="#" id="jsonDownloadMeasOnly"><img name="geojson_exportMeasOnly_button" src="${geoJSONIcon}" class="button-icon" style="height: 24px" /></a>
 				<a href="#" download="measure.dxf"><img name="dxf_export_button" src="${dxfIcon}" class="button-icon" style="height: 24px" /></a>
 			`);
 	         
@@ -23162,17 +23206,16 @@ ENDSEC
 
 	            $("#jsonDownloadMeasOnly").attr("download", 'defaultDataMeasOnly.json');
 
-	            let elDownloadJSONMeasOnly = elExport.find("img[name=geojson_export_button]").parent();
+	            let elDownloadJSONMeasOnly = elExport.find("img[name=geojson_exportMeasOnly_button]").parent();
 	            elDownloadJSONMeasOnly.click((event) => {
-	                let scene = this.viewer.scene;
+	                let scene = viewer.scene;
 	                let measurements = [...scene.measurements, ...scene.profiles, ...scene.volumes];
 
 	                if (measurements.length > 0) {
 	                    let Measurements = GeoJSONExporter.toString(measurements);
-
 	                    let blob = JSON.stringify({ Measurements }, null, '\t');
 	                    let url = window.URL.createObjectURL(new Blob(([blob]), { type: 'data:application/octet-stream' }));
-	                    elDownloadJSON.attr('href', url);
+	                    elDownloadJSONMeasOnly.attr('href', url);
 	                } else {
 	                    this.viewer.postError("no measurements to export");
 	                    event.preventDefault();

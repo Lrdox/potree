@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\exporter",
+    "\\src\\utils",
+    "\\src\\viewer",
+    "\\src\\viewer\\PropertyPanels"
+  ],
+  "SelectedNode": "\\src\\viewer\\sidebar.js",
+  "PreviewInSolutionExplorer": false
+}

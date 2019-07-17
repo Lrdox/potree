@@ -403,8 +403,18 @@ export class AnnotationTool extends THREE.EventDispatcher {
 
 		this.light.position.copy(camera.position);
 
-		// make size independent of distance
-
+		for (let measure of measurements) {
+            measure.update();
+            console.log(measure);
+			
+            // spheres
+            for (let sphere of measure.spheres) {
+                let distance = camera.position.distanceTo(sphere.getWorldPosition(new THREE.Vector3()));
+                let pr = Utils.projectedRadius(1, camera, distance, clientWidth, clientHeight);
+                let scale = (15 / pr);
+                sphere.scale.set(scale, scale, scale);
+            }
+		}	
 	}
 
 	render(){
