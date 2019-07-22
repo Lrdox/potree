@@ -17,6 +17,7 @@ export function addAnnotToTree(){
 	document.getElementById("annotationFormform").reset();
     document.getElementById("annotationCreate").disabled = true;
     document.getElementById("annotationButton").disabled = false;
+    document.getElementById("annotationReset").disabled = false;
 
 	//viewer.postMessage('<span>'+inputPos+'</span>',{duration : 1000});
 
@@ -57,6 +58,7 @@ export function placeAnnotation(args = {}) {
 
     document.getElementById("annotationButton").disabled = true;
     document.getElementById("annotationCreate").disabled = false;
+    document.getElementById("annotationReset").disabled = true;
 
     let annotationTool = new AnnotationTool(viewer);
     viewer.scene.annotationList.push(annotationTool);
@@ -93,7 +95,7 @@ export function placeAnnotation(args = {}) {
 	}
 }
 
-export function clearForm(){
+export function clearCoordinates(){
 	document.getElementById("annotationCoordinateX").value = "";
 	document.getElementById("annotationCoordinateY").value = "";
 	document.getElementById("annotationCoordinateZ").value = "";

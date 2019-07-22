@@ -268,7 +268,7 @@ export class Sidebar{
                 let url = "http://localhost:1234/build/potree/resources/defaultDataMeasOnly.json";
                 $.getJSON(url, function (importedJson) {
                     let measure = new Measure();
-                    console.log(importedJson.Measurements);
+
                     for (var i = 0; i < importedJson.Measurements.length; i++) {
                         switch (importedJson.Measurements[i].geometry.type) {
                             case "Point":
@@ -1020,11 +1020,11 @@ export class Sidebar{
 			Potree.resourcePath + '/icons/annotation.svg',
 			'[title]annotations.add_annotation'));
 
-		elAnnotationTools = $('#annotationButton')[0];
+        elAnnotationTools = $('#annotationButton')[0];
 		elAnnotationTools.addEventListener('click',() => annotationNamespace.placeAnnotation());
 		
 		elAnnotationTools = $('#annotationReset')[0];
-		elAnnotationTools.addEventListener('click',() => annotationNamespace.clearForm());
+		elAnnotationTools.addEventListener('click',() => annotationNamespace.clearCoordinates());
 		
 		elAnnotationTools = $('#annotationCreate')[0];
         elAnnotationTools.addEventListener('click', () => annotationNamespace.addAnnotToTree());
@@ -1120,12 +1120,12 @@ export class Sidebar{
 		this.viewer.addEventListener('background_changed', (event) => {
 			$("input[name=background][value='" + this.viewer.getBackground() + "']").prop('checked', true);
 		});
-
-		$('#lblPointBudget')[0].innerHTML = Utils.addCommas(this.viewer.getPointBudget());
-		$('#lblFOV')[0].innerHTML = parseInt(this.viewer.getFOV());
+     
+        $('#lblPointBudget')[0].innerHTML = Utils.addCommas(this.viewer.getPointBudget());
+        $('#lblFOV')[0].innerHTML = parseInt(this.viewer.getFOV());
 		$('#lblEDLRadius')[0].innerHTML = this.viewer.getEDLRadius().toFixed(1);
-		$('#lblEDLStrength')[0].innerHTML = this.viewer.getEDLStrength().toFixed(1);
-		$('#chkEDLEnabled')[0].checked = this.viewer.getEDLEnabled();
+        $('#lblEDLStrength')[0].innerHTML = this.viewer.getEDLStrength().toFixed(1);
+        $('#chkEDLEnabled')[0].checked = this.viewer.getEDLEnabled();
 		
 		{
 			let elBackground = $(`#background_options`);
