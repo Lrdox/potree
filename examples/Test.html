@@ -32,21 +32,21 @@
 	<script src="../libs/plasio/js/laslaz.js"></script>
 	
 	<!-- INCLUDE ADDITIONAL DEPENDENCIES HERE -->
-		document.title = "";
-		viewer.setEDLEnabled(false);
-		viewer.setBackground("gradient"); // ["skybox", "gradient", "black", "white"];
-		viewer.setDescription(``);
-	
+	document.title = "";
+	viewer.setEDLEnabled(false);
+	viewer.setBackground("gradient"); // ["skybox", "gradient", "black", "white"];
+	viewer.setDescription(``);
+
 	<div class="potree_container" style="position: absolute; width: 100%; height: 100%; left: 0px; top: 0px; ">
-		<div id="potree_render_area"></div>
-		<div id="potree_sidebar_container"> </div>
+		<div id="potree_render_area"></div> 
+		<div id="potree_sidebar_container"></div> 
+        <div id="potree_scrollbar_container"></div>
 	</div>
-	
+  
 	<script>
-	
+
 		window.viewer = new Potree.Viewer(document.getElementById("potree_render_area"));
-		
-		viewer.setEDLEnabled(true);
+
 		viewer.setFOV(60);
 		viewer.setPointBudget(1*1000*1000);
 		document.title = "";
@@ -57,13 +57,12 @@
 		
 		viewer.loadGUI(() => {
 			viewer.setLanguage('fr');
-			$("#menu_appearance").next().hide();
-			$("#menu_tools").next().hide();
 			$("#menu_annotations").next().show();
 			$("#menu_scene").next().show();
-			viewer.toggleSidebar();
-		});
-				
+            viewer.toggleSidebar();  
+            viewer.toggleScrollbar();
+        });
+
 		Potree.loadPointCloud("../pointclouds/Test/cloud.js", "Test", e => {
 			let pointcloud = e.pointcloud;
 			let material = pointcloud.material;
@@ -71,7 +70,7 @@
 			viewer.scene.addPointCloud(pointcloud);
 			viewer.scene.view.position.set(90.258, -35.175, 11.316);
 			viewer.scene.view.lookAt(new THREE.Vector3(88.306, -34.481, 11.357));
-			
+
 			material.pointColorType = Potree.PointColorType.RGB; // any Potree.PointColorType.XXXX 
 			material.size = 1;
 			material.pointSizeType = Potree.PointSizeType.ADAPTIVE;

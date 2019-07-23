@@ -117,6 +117,7 @@
 	font-size:	85%;
 	overflow: 	hidden;
 	border-right:	1px solid black;
+    transition: all .35s;
 }
 
 .potree_sidebar_brand{
@@ -154,17 +155,38 @@
 	cursor: 		pointer;
 }
 
-#potree_render_area{
-	position: 	absolute;
-	/*background: linear-gradient(-90deg, red, yellow);*/
-	top: 		0px;
-	bottom: 	0px;
-	left: 		0px;
-	right: 		0px;
-	overflow: 	hidden;
-	z-index: 	1;
-	-webkit-transition: left .35s;
-	transition: left .35s;
+#potree_scrollbar_toggle {
+    position: absolute;
+    float: left;
+    margin: 8px 8px;
+    background: none;
+    width: 2.5em;
+    height: 2.5em;
+    z-index: 100;
+    left: calc(2.5em + 8px);
+    cursor: pointer;
+}
+
+#potree_scrollbar_container {
+    position: absolute;
+    width: 100%;
+    height: 200px;
+    transition: bottom .35s;
+    overflow-y: scroll;
+    z-index: -1;
+}
+
+#potree_render_area {
+    position: absolute;
+    /*background: linear-gradient(-90deg, red, yellow);*/
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    overflow: hidden;
+    z-index: 1;
+    -webkit-transition: bottom .35s, left .35s;
+    transition: bottom .35s, left .35s;
 }
 
 .potree-panel {

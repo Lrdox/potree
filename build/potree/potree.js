@@ -2729,6 +2729,7 @@
 		document.getElementById("annotationFormform").reset();
 	    document.getElementById("annotationCreate").disabled = true;
 	    document.getElementById("annotationButton").disabled = false;
+	    document.getElementById("annotationReset").disabled = false;
 
 		//viewer.postMessage('<span>'+inputPos+'</span>',{duration : 1000});
 
@@ -2769,6 +2770,7 @@
 
 	    document.getElementById("annotationButton").disabled = true;
 	    document.getElementById("annotationCreate").disabled = false;
+	    document.getElementById("annotationReset").disabled = true;
 
 	    let annotationTool = new AnnotationTool(viewer);
 	    viewer.scene.annotationList.push(annotationTool);
@@ -2805,7 +2807,7 @@
 		}
 	}
 
-	function clearForm(){
+	function clearCoordinates(){
 		document.getElementById("annotationCoordinateX").value = "";
 		document.getElementById("annotationCoordinateY").value = "";
 		document.getElementById("annotationCoordinateZ").value = "";
@@ -23103,7 +23105,7 @@ ENDSEC
 	                let url = "http://localhost:1234/build/potree/resources/defaultDataMeasOnly.json";
 	                $.getJSON(url, function (importedJson) {
 	                    let measure = new Measure();
-	                    console.log(importedJson.Measurements);
+
 	                    for (var i = 0; i < importedJson.Measurements.length; i++) {
 	                        switch (importedJson.Measurements[i].geometry.type) {
 	                            case "Point":
@@ -23855,11 +23857,11 @@ ENDSEC
 				Potree.resourcePath + '/icons/annotation.svg',
 				'[title]annotations.add_annotation'));
 
-			elAnnotationTools = $('#annotationButton')[0];
+	        elAnnotationTools = $('#annotationButton')[0];
 			elAnnotationTools.addEventListener('click',() => placeAnnotation());
 			
 			elAnnotationTools = $('#annotationReset')[0];
-			elAnnotationTools.addEventListener('click',() => clearForm());
+			elAnnotationTools.addEventListener('click',() => clearCoordinates());
 			
 			elAnnotationTools = $('#annotationCreate')[0];
 	        elAnnotationTools.addEventListener('click', () => addAnnotToTree());
@@ -23955,12 +23957,12 @@ ENDSEC
 			this.viewer.addEventListener('background_changed', (event) => {
 				$("input[name=background][value='" + this.viewer.getBackground() + "']").prop('checked', true);
 			});
-
-			$('#lblPointBudget')[0].innerHTML = Utils.addCommas(this.viewer.getPointBudget());
-			$('#lblFOV')[0].innerHTML = parseInt(this.viewer.getFOV());
+	     
+	        $('#lblPointBudget')[0].innerHTML = Utils.addCommas(this.viewer.getPointBudget());
+	        $('#lblFOV')[0].innerHTML = parseInt(this.viewer.getFOV());
 			$('#lblEDLRadius')[0].innerHTML = this.viewer.getEDLRadius().toFixed(1);
-			$('#lblEDLStrength')[0].innerHTML = this.viewer.getEDLStrength().toFixed(1);
-			$('#chkEDLEnabled')[0].checked = this.viewer.getEDLEnabled();
+	        $('#lblEDLStrength')[0].innerHTML = this.viewer.getEDLStrength().toFixed(1);
+	        $('#chkEDLEnabled')[0].checked = this.viewer.getEDLEnabled();
 			
 			{
 				let elBackground = $(`#background_options`);
@@ -26165,9 +26167,9 @@ ENDSEC
 			let isVisible = renderArea.css('left') !== '0px';
 
 			if (isVisible) {
-				renderArea.css('left', '0px');
+	            renderArea.css('left', '0px');
 			} else {
-				renderArea.css('left', '300px');
+	            renderArea.css('left', '300px');
 			}
 		};
 
@@ -26179,6 +26181,22 @@ ENDSEC
 				this.mapView.toggle();
 			}
 		};
+
+	    toggleScrollbar() {
+	        let renderArea = $('#potree_render_area');
+	        let renderSidebarArea = $('#potree_sidebar_container');
+	        let isVisible = (renderArea.css('bottom') !== '0px');
+
+	        if (isVisible) {
+	            renderSidebarArea.css('bottom', '0px');
+	            renderSidebarArea.css('height', '100%');
+	            renderArea.css('bottom', '0px');
+	        } else {
+	            renderSidebarArea.css('bottom', '200px');
+	            renderSidebarArea.css('height', 'calc(100% - 200px)');
+	            renderArea.css('bottom', '200px');
+	        }
+	    }
 
 		onGUILoaded(callback){
 			if(this.guiLoaded){
@@ -26192,28 +26210,33 @@ ENDSEC
 
 			this.onGUILoaded(callback);
 
-			let viewer = this;
+	        let viewer = this;
 			let sidebarContainer = $('#potree_sidebar_container');
 			sidebarContainer.load(new URL(Potree.scriptPath + '/sidebar.html').href, () => {
 				sidebarContainer.css('width', '300px');
 				sidebarContainer.css('height', '100%');
 
+	            let scrollbarContainer = $('#potree_scrollbar_container');
+	            scrollbarContainer.load(new URL(Potree.scriptPath + '/scrollbar.html').href, () => {
+	                scrollbarContainer.css('bottom', '0px');
+	            });
+
 				let imgMenuToggle = document.createElement('img');
 				imgMenuToggle.src = new URL(Potree.resourcePath + '/icons/menu_button.svg').href;
-				imgMenuToggle.onclick = this.toggleSidebar;
+	            imgMenuToggle.onclick = this.toggleSidebar;
 				imgMenuToggle.classList.add('potree_menu_toggle');
 
 				let imgMapToggle = document.createElement('img');
 				imgMapToggle.src = new URL(Potree.resourcePath + '/icons/map_icon.png').href;
 				imgMapToggle.style.display = 'none';
 				imgMapToggle.onclick = e => { this.toggleMap(); };
-				imgMapToggle.id = 'potree_map_toggle';
+	            imgMapToggle.id = 'potree_map_toggle';
 
-				viewer.renderArea.insertBefore(imgMapToggle, viewer.renderArea.children[0]);
-				viewer.renderArea.insertBefore(imgMenuToggle, viewer.renderArea.children[0]);
+	            viewer.renderArea.insertBefore(imgMapToggle, viewer.renderArea.children[0]);
+	            viewer.renderArea.insertBefore(imgMenuToggle, viewer.renderArea.children[0]);
 
 				this.mapView = new MapView(this);
-				this.mapView.init();
+	            this.mapView.init();
 
 				i18n.init({
 					lng: 'en',
@@ -26228,8 +26251,8 @@ ENDSEC
 
 				$(() => {
 					//initSidebar(this);
-					let sidebar = new Sidebar(this);
-					sidebar.init();
+	                let sidebar = new Sidebar(this);
+	                sidebar.init();
 
 					//if (callback) {
 					//	$(callback);
@@ -26257,13 +26280,18 @@ ENDSEC
 
 						});
 					});
-
-					
-
 				});
 
 				
-			});
+	        });
+
+	        let imgScrollbarToggle = document.createElement('img');
+	        imgScrollbarToggle.src = new URL(Potree.resourcePath + '/icons/menu_button.svg').href;
+	        imgScrollbarToggle.title = 'Show scrollbar';
+	        imgScrollbarToggle.onclick = this.toggleScrollbar;
+	        imgScrollbarToggle.id = 'potree_scrollbar_toggle';
+
+	        viewer.renderArea.insertBefore(imgScrollbarToggle, viewer.renderArea.children[0]);
 		}
 
 		setLanguage (lang) {
@@ -27371,7 +27399,7 @@ ENDSEC
 	exports.WorkerPool = WorkerPool;
 	exports.XHRFactory = XHRFactory;
 	exports.addAnnotToTree = addAnnotToTree;
-	exports.clearForm = clearForm;
+	exports.clearCoordinates = clearCoordinates;
 	exports.debug = debug;
 	exports.framenumber = framenumber;
 	exports.loadPointCloud = loadPointCloud;

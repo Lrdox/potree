@@ -2,11 +2,8 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\exporter",
-    "\\src\\utils",
-    "\\src\\viewer",
-    "\\src\\viewer\\PropertyPanels"
+    "\\src\\viewer"
   ],
-  "SelectedNode": "\\src\\viewer\\sidebar.js",
+  "SelectedNode": "\\pointclouds",
   "PreviewInSolutionExplorer": false
 }
