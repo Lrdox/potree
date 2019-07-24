@@ -1005,15 +1005,16 @@ export class Viewer extends EventDispatcher{
     toggleScrollbar() {
         let renderArea = $('#potree_render_area');
         let renderSidebarArea = $('#potree_sidebar_container');
+        let renderScrollbarArea = $('#potree_scrollbar_container');
         let isVisible = (renderArea.css('bottom') !== '0px');
 
         if (isVisible) {
-            renderSidebarArea.css('bottom', '0px');
-            renderSidebarArea.css('height', '100%');
+            renderScrollbarArea.css('bottom', '-200px');
+            renderSidebarArea.css({ 'height': '100%', 'bottom': '0px' });
             renderArea.css('bottom', '0px');
         } else {
-            renderSidebarArea.css('bottom', '200px');
-            renderSidebarArea.css('height', 'calc(100% - 200px)');
+            renderScrollbarArea.css('bottom', '0px');
+            renderSidebarArea.css({ 'height': 'calc(100% - 200px)', 'bottom': '200px' });
             renderArea.css('bottom', '200px');
         }
     }
@@ -1102,7 +1103,6 @@ export class Viewer extends EventDispatcher{
 				});
 			});
 
-			
         });
 
         let imgScrollbarToggle = document.createElement('img');
