@@ -1,3 +1,5 @@
+# README
+
 ## CLUEDU EDIT
 
 This version of Potree is made for the CLUEDU project. Its original purpose is to serve as a basis for a detective game.
