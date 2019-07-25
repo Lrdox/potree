@@ -1,5 +1,15 @@
+## CLUEDU EDIT
 
-# README
+This version of Potree is made for the CLUEDU project. Its original purpose is to serve as a basis for a detective game.
+
+This version based on Potree 1.6. It includes the following additions:
+
+* Annotation Management -- Addition, Removal and Editing
+* Import/Export of Measurements and Annotations (both or separately)
+* Added Translation and documentation for future use (French and English only)
+* Bottom Scrollbar for Witness List, can be used for anything though
+
+## README (Original Potree)
 
 * [Getting Started](./docs/getting_started.md)
 
