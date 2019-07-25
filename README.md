@@ -1,9 +1,21 @@
-
 # README
+
+## CLUEDU EDIT
+
+This version of Potree is made for the CLUEDU project. Its original purpose is to serve as a basis for a detective game.
+
+This version based on Potree 1.6. It includes the following additions:
+
+* Annotation Management -- Addition, Removal and Editing
+* Import/Export of Measurements and Annotations (both or separately)
+* Added Translation and documentation for future use (French and English only)
+* Bottom Scrollbar for Witness List, can be used for anything though
+
+## README (Original Potree)
 
 * [Getting Started](./docs/getting_started.md)
 
-## About
+### About
 
 Potree is a free open-source WebGL based point cloud renderer for large point clouds.
 It is based on the [TU Wien Scanopy project](https://www.cg.tuwien.ac.at/research/projects/Scanopy/)
@@ -18,7 +30,7 @@ Contact: Markus Schütz (mschuetz@potree.org)
 
 Reference: [Potree: Rendering Large Point Clouds in Web Browsers](https://www.cg.tuwien.ac.at/research/publications/2016/SCHUETZ-2016-POT/SCHUETZ-2016-POT-thesis.pdf)
 
-## Build
+### Build
 
 Make sure you have [node.js](http://nodejs.org/) installed
 
@@ -40,15 +52,15 @@ Use the ```gulp watch``` command to
 gulp watch
 ```
 
-## Downloads
+### Downloads
 
 [PotreeConverter source and Win64 binaries](https://github.com/potree/PotreeConverter/releases)
 
-## Showcase
+### Showcase
 
 Take a look at the [potree showcase](http://potree.org/wp/demo/) for some live examples.
 
-## Compatibility
+### Compatibility
 
 | Browser              | OS      | Result        |   |
 | -------------------- |:-------:|:-------------:|:-:|
@@ -59,7 +71,7 @@ Take a look at the [potree showcase](http://potree.org/wp/demo/) for some live e
 | Chrome               | Android | works         | Reduced functionality due to unsupported WebGL extensions |
 | Opera                | Android | works         | Reduced functionality due to unsupported WebGL extensions |
 
-## Credits
+### Credits
 
 * The multi-res-octree algorithms used by this viewer were developed at the Vienna University of Technology by Michael Wimmer and Claus Scheiblauer as part of the [Scanopy Project](http://www.cg.tuwien.ac.at/research/projects/Scanopy/).
 * [Three.js](https://github.com/mrdoob/three.js), the WebGL 3D rendering library on which potree is built.

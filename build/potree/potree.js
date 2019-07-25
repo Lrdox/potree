@@ -21301,7 +21301,6 @@ ENDSEC
 	            
 	            this.propertiesPanel.addVolatileListener(this.annotation, "annotation_added", this._update);
 	            this.propertiesPanel.addVolatileListener(this.annotation, "annotation_removed", this._update);
-	            //this.propertiesPanel.addVolatileListener(this.annotation, "annotation_moved", this._update);
 	        }
 
 	        this.update();
@@ -24181,6 +24180,31 @@ ENDSEC
 
 	}
 
+	class Scrollbar {
+	    constructor(viewer){
+	        this.viewer = viewer;
+	    }
+
+	    init() {
+			let elScrollbar = $('#witness_list_root');
+			let content = `
+			<li><img title = "Witness Name" src="https://www.newton.ac.uk/files/covers/968361.jpg"/></li>
+			<li><img title = "Witness Name" src="https://www.newton.ac.uk/files/covers/968361.jpg"/></li>
+			`;
+			let haha = `
+			<li><img title = "Witness Name" src="https://www.newton.ac.uk/files/covers/968361.jpg"/></li>
+			<li><img title = "Witness Name" src="https://www.newton.ac.uk/files/covers/968361.jpg"/></li>
+			`;
+			content = this.addContent(content,haha);
+
+			elScrollbar.append("<ul>" + content + "</ul>");
+	    }
+			
+		addContent(content,haha){
+			return content.concat(haha);
+		}
+	}
+
 	/**
 	 * @author mschuetz / http://mschuetz.at
 	 *
@@ -26220,6 +26244,11 @@ ENDSEC
 	            let scrollbarContainer = $('#potree_scrollbar_container');
 	            scrollbarContainer.load(new URL(Potree.scriptPath + '/scrollbar.html').href, () => {
 	                scrollbarContainer.css('bottom', '0px');
+
+	                $(() => {
+	                    let scrollbar = new Scrollbar(this);
+	                    scrollbar.init();
+	                });
 	            });
 
 				let imgMenuToggle = document.createElement('img');

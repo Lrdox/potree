@@ -1,9 +1,12 @@
 {
   "ExpandedNodes": [
     "",
+    "\\build",
+    "\\build\\potree",
+    "\\examples",
     "\\src",
     "\\src\\viewer"
   ],
-  "SelectedNode": "\\pointclouds",
+  "SelectedNode": "\\src\\viewer\\scrollbar.js",
   "PreviewInSolutionExplorer": false
 }

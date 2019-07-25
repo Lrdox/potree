@@ -15,6 +15,7 @@ import {BoxVolume} from "../utils/Volume.js";
 import {Features} from "../Features.js";
 import {Message} from "../utils/Message.js";
 import {Sidebar} from "./sidebar.js";
+import {Scrollbar} from "./scrollbar.js";
 
 import {InputHandler} from "../navigation/InputHandler.js";
 import {NavigationCube} from "./NavigationCube.js";
@@ -1040,6 +1041,11 @@ export class Viewer extends EventDispatcher{
             let scrollbarContainer = $('#potree_scrollbar_container');
             scrollbarContainer.load(new URL(Potree.scriptPath + '/scrollbar.html').href, () => {
                 scrollbarContainer.css('bottom', '0px');
+
+                $(() => {
+                    let scrollbar = new Scrollbar(this);
+                    scrollbar.init();
+                });
             });
 
 			let imgMenuToggle = document.createElement('img');

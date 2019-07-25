@@ -67,7 +67,6 @@ export class AnnotationPanel{
             
             this.propertiesPanel.addVolatileListener(this.annotation, "annotation_added", this._update);
             this.propertiesPanel.addVolatileListener(this.annotation, "annotation_removed", this._update);
-            //this.propertiesPanel.addVolatileListener(this.annotation, "annotation_moved", this._update);
         }
 
         this.update();
