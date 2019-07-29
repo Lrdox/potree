@@ -33,6 +33,8 @@ export class Viewer extends EventDispatcher{
 	constructor(domElement, args = {}){
 		super();
 
+		this.restrict = false; //Restrict access -- admin/client
+
 		this.renderArea = domElement;
 		this.guiLoaded = false;	
 		this.guiLoadTasks = [];

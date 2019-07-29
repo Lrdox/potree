@@ -58,7 +58,9 @@ export class Sidebar{
 		this.initClippingTool();
 		this.initSettings();
 		this.initUnits();
-		this.initAnnotationTools();
+		if (!viewer.restrict){
+			this.initAnnotationTools();
+		}
 		
 		$('#potree_version_number').html(Potree.version.major + "." + Potree.version.minor + Potree.version.suffix);
 		$('.perfect_scrollbar').perfectScrollbar();
@@ -1031,30 +1033,30 @@ export class Sidebar{
         elAnnotationTools.disabled = true;
 
         //Marker movement on field update 
-        let elAnnotationTools1 = $('#annotationCoordinateX')[0];
-        elAnnotationTools1.addEventListener('change', (e) => {
-        //$(document).on('change', elAnnotationTools1, () => {
+        let elAnnotationCoordinateX = $('#annotationCoordinateX')[0];
+        elAnnotationCoordinateX.addEventListener('change', (e) => {
+        //$(document).on('change', elAnnotationCoordinateX, () => {  <-- This is known as Event Delegation, not needed here
             let event = {
                 type: 'annotationMarker_moved',
-                value: [elAnnotationTools1.value, $('#annotationCoordinateY')[0].value, $('#annotationCoordinateZ')[0].value]
+                value: [elAnnotationCoordinateX.value, $('#annotationCoordinateY')[0].value, $('#annotationCoordinateZ')[0].value]
             };
             this.viewer.scene.dispatchEvent(event);
         });
 
-        let elAnnotationTools2 = $('#annotationCoordinateY')[0];
-        elAnnotationTools2.addEventListener('change', () => {
+        let elAnnotationCoordinateY = $('#annotationCoordinateY')[0];
+        elAnnotationCoordinateY.addEventListener('change', () => {
             let event = {
                 type: 'annotationMarker_moved',
-                value: [$('#annotationCoordinateX')[0].value, elAnnotationTools2.value, $('#annotationCoordinateZ')[0].value]
+                value: [$('#annotationCoordinateX')[0].value, elAnnotationCoordinateY.value, $('#annotationCoordinateZ')[0].value]
             };
             this.viewer.scene.dispatchEvent(event);
         });
 
-        let elAnnotationTools3 = $('#annotationCoordinateZ')[0];
-        elAnnotationTools3.addEventListener('change', () => {
+        let elAnnotationCoordinateZ = $('#annotationCoordinateZ')[0];
+        elAnnotationCoordinateZ.addEventListener('change', () => {
             let event = {
                 type: 'annotationMarker_moved',
-                value: [$('#annotationCoordinateX')[0].value, $('#annotationCoordinateY')[0].value, elAnnotationTools3.value]
+                value: [$('#annotationCoordinateX')[0].value, $('#annotationCoordinateY')[0].value, elAnnotationCoordinateZ.value]
             };
             this.viewer.scene.dispatchEvent(event);
         });

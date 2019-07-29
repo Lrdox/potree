@@ -57,17 +57,17 @@ export class AnnotationPanel{
              <br/> <button id="annotationEdit" class="centerStyle" type="button">Edit</button> 
 		</div>
 		`);
-
-        let elAnnotationEdit = this.elContent.find("[id=annotationEdit]");
-        elAnnotationEdit.click(() => viewer.scene.editAnnotation(this.annotation));
-
-        if (this.annotation != null) {
-            this.elAnnotationRemove = this.elContent.find("img[name=annotationRemove]");
-            this.elAnnotationRemove.click(() => this.viewer.scene.removeAnnotation(this.annotation));
-            
-            this.propertiesPanel.addVolatileListener(this.annotation, "annotation_added", this._update);
-            this.propertiesPanel.addVolatileListener(this.annotation, "annotation_removed", this._update);
-        }
+		if (!viewer.restrict){
+        	let elAnnotationEdit = this.elContent.find("[id=annotationEdit]");
+        	elAnnotationEdit.click(() => viewer.scene.editAnnotation(this.annotation));
+			if (this.annotation != null) {
+				this.elAnnotationRemove = this.elContent.find("img[name=annotationRemove]");
+				this.elAnnotationRemove.click(() => this.viewer.scene.removeAnnotation(this.annotation));
+				
+				this.propertiesPanel.addVolatileListener(this.annotation, "annotation_added", this._update);
+				this.propertiesPanel.addVolatileListener(this.annotation, "annotation_removed", this._update);
+        	}
+		}
 
         this.update();
     }

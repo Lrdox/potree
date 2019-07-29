@@ -21291,17 +21291,17 @@ ENDSEC
              <br/> <button id="annotationEdit" class="centerStyle" type="button">Edit</button> 
 		</div>
 		`);
-
-	        let elAnnotationEdit = this.elContent.find("[id=annotationEdit]");
-	        elAnnotationEdit.click(() => viewer.scene.editAnnotation(this.annotation));
-
-	        if (this.annotation != null) {
-	            this.elAnnotationRemove = this.elContent.find("img[name=annotationRemove]");
-	            this.elAnnotationRemove.click(() => this.viewer.scene.removeAnnotation(this.annotation));
-	            
-	            this.propertiesPanel.addVolatileListener(this.annotation, "annotation_added", this._update);
-	            this.propertiesPanel.addVolatileListener(this.annotation, "annotation_removed", this._update);
-	        }
+			if (!viewer.restrict){
+	        	let elAnnotationEdit = this.elContent.find("[id=annotationEdit]");
+	        	elAnnotationEdit.click(() => viewer.scene.editAnnotation(this.annotation));
+				if (this.annotation != null) {
+					this.elAnnotationRemove = this.elContent.find("img[name=annotationRemove]");
+					this.elAnnotationRemove.click(() => this.viewer.scene.removeAnnotation(this.annotation));
+					
+					this.propertiesPanel.addVolatileListener(this.annotation, "annotation_added", this._update);
+					this.propertiesPanel.addVolatileListener(this.annotation, "annotation_removed", this._update);
+	        	}
+			}
 
 	        this.update();
 	    }
@@ -22894,7 +22894,9 @@ ENDSEC
 			this.initClippingTool();
 			this.initSettings();
 			this.initUnits();
-			this.initAnnotationTools();
+			if (!viewer.restrict){
+				this.initAnnotationTools();
+			}
 			
 			$('#potree_version_number').html(Potree.version.major + "." + Potree.version.minor + Potree.version.suffix);
 			$('.perfect_scrollbar').perfectScrollbar();
@@ -23867,30 +23869,30 @@ ENDSEC
 	        elAnnotationTools.disabled = true;
 
 	        //Marker movement on field update 
-	        let elAnnotationTools1 = $('#annotationCoordinateX')[0];
-	        elAnnotationTools1.addEventListener('change', (e) => {
-	        //$(document).on('change', elAnnotationTools1, () => {
+	        let elAnnotationCoordinateX = $('#annotationCoordinateX')[0];
+	        elAnnotationCoordinateX.addEventListener('change', (e) => {
+	        //$(document).on('change', elAnnotationCoordinateX, () => {  <-- This is known as Event Delegation, not needed here
 	            let event = {
 	                type: 'annotationMarker_moved',
-	                value: [elAnnotationTools1.value, $('#annotationCoordinateY')[0].value, $('#annotationCoordinateZ')[0].value]
+	                value: [elAnnotationCoordinateX.value, $('#annotationCoordinateY')[0].value, $('#annotationCoordinateZ')[0].value]
 	            };
 	            this.viewer.scene.dispatchEvent(event);
 	        });
 
-	        let elAnnotationTools2 = $('#annotationCoordinateY')[0];
-	        elAnnotationTools2.addEventListener('change', () => {
+	        let elAnnotationCoordinateY = $('#annotationCoordinateY')[0];
+	        elAnnotationCoordinateY.addEventListener('change', () => {
 	            let event = {
 	                type: 'annotationMarker_moved',
-	                value: [$('#annotationCoordinateX')[0].value, elAnnotationTools2.value, $('#annotationCoordinateZ')[0].value]
+	                value: [$('#annotationCoordinateX')[0].value, elAnnotationCoordinateY.value, $('#annotationCoordinateZ')[0].value]
 	            };
 	            this.viewer.scene.dispatchEvent(event);
 	        });
 
-	        let elAnnotationTools3 = $('#annotationCoordinateZ')[0];
-	        elAnnotationTools3.addEventListener('change', () => {
+	        let elAnnotationCoordinateZ = $('#annotationCoordinateZ')[0];
+	        elAnnotationCoordinateZ.addEventListener('change', () => {
 	            let event = {
 	                type: 'annotationMarker_moved',
-	                value: [$('#annotationCoordinateX')[0].value, $('#annotationCoordinateY')[0].value, elAnnotationTools3.value]
+	                value: [$('#annotationCoordinateX')[0].value, $('#annotationCoordinateY')[0].value, elAnnotationCoordinateZ.value]
 	            };
 	            this.viewer.scene.dispatchEvent(event);
 	        });
@@ -24185,23 +24187,17 @@ ENDSEC
 	        this.viewer = viewer;
 	    }
 
+		//Add anchors and images, you can make it "easier" to add stuff by making an img and its anchor (have the same name) in 2 different methods --> try it with some random images and make some default html pages as "Profiles"
 	    init() {
-			let elScrollbar = $('#witness_list_root');
-			let content = `
-			<li><img title = "Witness Name" src="https://www.newton.ac.uk/files/covers/968361.jpg"/></li>
-			<li><img title = "Witness Name" src="https://www.newton.ac.uk/files/covers/968361.jpg"/></li>
-			`;
-			let haha = `
-			<li><img title = "Witness Name" src="https://www.newton.ac.uk/files/covers/968361.jpg"/></li>
-			<li><img title = "Witness Name" src="https://www.newton.ac.uk/files/covers/968361.jpg"/></li>
-			`;
-			content = this.addContent(content,haha);
-
-			elScrollbar.append("<ul>" + content + "</ul>");
+			let elScrollbar = $('#witness_list_root');		
+			 //This needs to be edited with database implemented
+			elScrollbar.append("<ul>" + this.getContent("catWitness","witnesses") + this.getContent("catWitness","witnesses") + this.getContent("catWitness","witnesses") + this.getContent("catWitness","witnesses") + this.getContent("catWitness","witnesses") + this.getContent("catWitness","witnesses") + this.getContent("catWitness","witnesses") + this.getContent("catWitness","witnesses") + this.getContent("catWitness","witnesses") + this.getContent("catWitness","witnesses") + this.getContent("catWitness","witnesses") + this.getContent("catWitness","witnesses") + this.getContent("catWitness","witnesses") + this.getContent("catWitness","witnesses") + this.getContent("catWitness","witnesses") + this.getContent("catWitness","witnesses") + this.getContent("catWitness","witnesses") + "</ul>");
 	    }
-			
-		addContent(content,haha){
-			return content.concat(haha);
+			//TODO CHANGE HREF TO DYNAMIC
+		getContent(contentName, contentType){
+			return( `<li><a href='http://localhost:1234/examples/' target="_blank">
+			<img title = "${contentName}" src="${Potree.resourcePath + '/' + contentType + '/' + contentName + '.jpg'}"/></a></li>
+			`);
 		}
 	}
 
@@ -25235,6 +25231,8 @@ ENDSEC
 		
 		constructor(domElement, args = {}){
 			super();
+
+			this.restrict = false; //Restrict access -- admin/client
 
 			this.renderArea = domElement;
 			this.guiLoaded = false;	
