@@ -58,8 +58,10 @@ export class Sidebar{
 		this.initClippingTool();
 		this.initSettings();
 		this.initUnits();
-		if (!viewer.restrict){
+		if (!viewer.restrictAccess){
 			this.initAnnotationTools();
+		}else{
+			$('#menu_annotations').css('display','none');
 		}
 		
 		$('#potree_version_number').html(Potree.version.major + "." + Potree.version.minor + Potree.version.suffix);
@@ -248,7 +250,7 @@ export class Sidebar{
            let elUploadJSON = elImport.find("img[name=geojson_import_button]").parent();
             elUploadJSON.click((event) => {
 
-                let url = "http://localhost:1234/build/potree/resources/defaultData.json";
+                let url = Potree.scriptPath + "/resources/defaultData.json";
                 $.getJSON(url, function (importedJson) {
                     if (importedJson.Annotations.length > 0) {
                         for (var i = 0; i < importedJson.Annotations.length; i++) 
@@ -267,7 +269,7 @@ export class Sidebar{
 
             let elUploadJSONMeasOnly = elImport.find("img[name=geojson_importMeas_button]").parent();
             elUploadJSONMeasOnly.click((event) => {
-                let url = "http://localhost:1234/build/potree/resources/defaultDataMeasOnly.json";
+                let url = Potree.scriptPath + "/resources/defaultDataMeasOnly.json";
                 $.getJSON(url, function (importedJson) {
                     let measure = new Measure();
 
@@ -741,13 +743,13 @@ export class Sidebar{
 	initClippingTool(){
 
 
-		this.viewer.addEventListener("cliptask_changed", (event) => {
+		/*this.viewer.addEventListener("cliptask_changed", (event) => {
 			console.log("TODO");
 		});
 
 		this.viewer.addEventListener("clipmethod_changed", (event) => {
 			console.log("TODO");
-		});
+		});*/
 
 		{
 			let elClipTask = $("#cliptask_options");

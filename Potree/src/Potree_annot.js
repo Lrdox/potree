@@ -407,7 +407,6 @@ export class AnnotationTool extends THREE.EventDispatcher {
 
 		for (let measure of measurements) {
             measure.update();
-            console.log(measure);
 			
             // spheres
             for (let sphere of measure.spheres) {

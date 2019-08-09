@@ -16,7 +16,7 @@ export default [
 			name: 'Potree',
 			sourcemap: false
 		}
-	}/*,{
+	},/*,{
 		input: 'src/workers/LASDecoderWorker.js',
 		output: {
 			file: 'build/potree/workers/LASDecoderWorker.js',

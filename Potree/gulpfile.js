@@ -3,15 +3,14 @@ const path = require('path');
 const gulp = require('gulp');
 const exec = require('child_process').exec;
 
-
 const fs = require("fs");
 const concat = require('gulp-concat');
 const gutil = require('gulp-util');
 const through = require('through');
 const File = gutil.File;
-const connect = require('gulp-connect');
 const watch = require('glob-watcher');
 
+var app = require('../Server/src/server');
 
 let paths = {
 	laslaz: [
@@ -22,7 +21,8 @@ let paths = {
 		"src/viewer/potree.css",
 		"src/viewer/sidebar.html",
 		"src/viewer/scrollbar.html",
-		"src/viewer/profile.html"
+		"src/viewer/profile.html",
+		"src/viewer/description.html"
 	],
 	resources: [
 		"resources/**/*"
@@ -109,7 +109,8 @@ gulp.task("build", ['workers','shaders', "icons_viewer", "examples_page"], funct
 // For development, it is now possible to use 'gulp webserver'
 // from the command line to start the server (default port is 8080)
 gulp.task('webserver', function() {
-	server = connect.server({port: 1234});
+	var server = require('../Server/src/server').app;
+	server.listen(1234);
 });
 
 gulp.task('examples_page', function() {
@@ -404,6 +405,7 @@ gulp.task('watch', ["build", "webserver"], function() {
 	//gulp.run("webserver");
 
 	let watchlist = [
+		'../Server/src/**/*.js',
 		'src/**/*.js',
 		'src/**/*.css',
 		'src/**/*.html',
@@ -427,8 +429,8 @@ gulp.task('watch', ["build", "webserver"], function() {
 			}
 		}
 
-		console.log("===============================");
-		console.log("watch event:");
+		console.log("________________________________");
+		console.log("Watch event:");
 		console.log(cb);
 		gulp.run("build");
 

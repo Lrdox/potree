@@ -211,15 +211,15 @@
         margin-left: 8px;
         color: #ffffff;
     }
-    #witness_list_root > ul > li {
+    #object_list_root > ul > li {
         display: inline-block;
     }
-    #witness_list_root ul > li > a > img {
+    #object_list_root ul > li > a > img {
         width: 150px;
         height: 120px;
         margin-left: 8px;
     }
-	    #witness_list_root ul > li > img {
+	    #object_list_root ul > li > img {
         width: 150px;
         height: 120px;
         margin-left: 8px;

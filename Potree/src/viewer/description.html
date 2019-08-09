@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+</head>
+
+<body>
+<script src="../../libs/i18next/i18next.js"></script>
+<script src="../../libs/jquery/jquery-3.1.1.min.js"></script>
+
+
+<script>
+	let element = $('#aakaaa');
+
+	$(document).ready(function(){
+		console.log('hi');
+		element.on('click',function(event){
+			$.ajax({
+				url: 'description.html',
+				type: 'GET',
+				success: function(response){
+					console.log(response);
+				}
+			});
+		});
+	});
+</script>
+
+
+<h3 id = 'aakkaa'>Document</h3>
+
+</body>
+</html>
