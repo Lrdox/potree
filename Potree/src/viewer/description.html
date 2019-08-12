@@ -11,26 +11,29 @@
 <script src="../../libs/i18next/i18next.js"></script>
 <script src="../../libs/jquery/jquery-3.1.1.min.js"></script>
 
+<h3>Document</h3>
+
+<button id = 'aakkaa'>hi</button>
+
+
 
 <script>
-	let element = $('#aakaaa');
+	let element = $('#aakkaa');
 
-	$(document).ready(function(){
-		console.log('hi');
-		element.on('click',function(event){
+	;$(document).ready(() => {
+		console.log('Element clicked');
+		element.on('click',() => {
 			$.ajax({
-				url: 'description.html',
+				url: '/boo/hi',
 				type: 'GET',
-				success: function(response){
-					console.log(response);
+				dataType: 'text',
+				success: (data) => {
+					console.log('ajax log',data);
 				}
 			});
 		});
 	});
 </script>
-
-
-<h3 id = 'aakkaa'>Document</h3>
 
 </body>
 </html>
