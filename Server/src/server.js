@@ -9,18 +9,17 @@ var app = express();
 app.use(express.static(path.dirname(module.parent.id)));
 
 app.get('/boo/:pageDir',function(req,res){
-	// console.log((path.dirname(module.parent.id)));
-	// var page = (path.dirname(module.parent.id)) + req.params.pageDir;
-	console.log(req.params.pageDir);
-	res.send('sauce biggy chef');
-	//res.sendFile(page);
-	/*
+	//console.log(req.params.pageDir);
 	mariadb.createConnection({host: '127.0.0.1', user: 'root', password: '1cluedu2mariadb3', database: 'cluedu', port: '3306', multipleStatements: true})
 	.then(conn => {
 		conn.query('SELECT type FROM expertise;	SELECT type FROM expertise;	SELECT type FROM expertise;')
 		.then (rows => {
+			let envoi = [];
 			for (var i = 0; i < (rows.length); i++){
-			console.log(rows[i]);}
+				envoi.push(rows[i][0]);
+			}
+			console.log(envoi);
+			res.send(envoi);
 			conn.end();
 		})
 		.catch (err => {
@@ -31,7 +30,6 @@ app.get('/boo/:pageDir',function(req,res){
 		//handle error
 		console.log('Connection error');
 	});
-	*/
 });
 
 module.exports.app = app;
