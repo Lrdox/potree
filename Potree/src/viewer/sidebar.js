@@ -235,7 +235,6 @@ export class Sidebar{
 		let elProperties = elScene.next().find("#scene_object_properties");
 	
         {
-
             let geoJSONIcon = `${Potree.resourcePath}/icons/file_geojson.svg`;
             let dxfIcon = `${Potree.resourcePath}/icons/file_dxf.svg`;
 

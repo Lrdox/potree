@@ -11,24 +11,31 @@
 <script src="../../libs/i18next/i18next.js"></script>
 <script src="../../libs/jquery/jquery-3.1.1.min.js"></script>
 
+
 <h3>Document</h3>
-
-<button id = 'aakkaa'>hi</button>
-
+<div id = 'aakkaa'>
+	<button>hi</button> <br/>
+</div>
 
 
 <script>
 	let element = $('#aakkaa');
+	let imgElement = document.createElement('img');
+	let pathToResource = '../../../Resources/';
 
-	;$(document).ready(() => {
-		console.log('Element clicked');
+	imgElement.id = 'image';
+	$(document).ready(() => {
+		console.log('Document Ready');
 		element.on('click',() => {
+			console.log('Element clicked');
 			$.ajax({
-				url: '/boo/hi',
+				url: '/boo/chat',
 				type: 'GET',
-				dataType: 'json',
+				dataType: 'text',
 				success: (data) => {
-					console.log('ajax log',data);
+					imgElement.src = pathToResource.concat(data.replace('"','').replace('"',''));
+					imgElement.width = '500';
+					element.append(imgElement);
 				}
 			});
 		});
