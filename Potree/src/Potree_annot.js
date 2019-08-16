@@ -18,9 +18,9 @@ export function addAnnotToTree(){
     document.getElementById("annotationCreate").disabled = true;
     document.getElementById("annotationButton").disabled = false;
     document.getElementById("annotationReset").disabled = false;
-
-	//viewer.postMessage('<span>'+inputPos+'</span>',{duration : 1000});
-
+	if (document.getElementById("annotationEdit") != null){
+		document.getElementById("annotationEdit").disabled = false;
+	}
     //Create the Annotation
 	if (inputPos != ",,"){
         let annotationTool = new AnnotationTool(viewer);
@@ -56,9 +56,12 @@ export function placeAnnotation(args = {}) {
     document.getElementById("annotationName").value = name;
     document.getElementById("annotationDescription").value = Description;
 
+	document.getElementById("annotationCreate").disabled = false;
     document.getElementById("annotationButton").disabled = true;
-    document.getElementById("annotationCreate").disabled = false;
     document.getElementById("annotationReset").disabled = true;
+	if (document.getElementById("annotationEdit") != null){
+		document.getElementById("annotationEdit").disabled = true;
+	}
 
     let annotationTool = new AnnotationTool(viewer);
     viewer.scene.annotationList.push(annotationTool);
@@ -273,6 +276,14 @@ export class AnnotationMeasure extends THREE.Object3D {
                 document.getElementById('annotationCoordinateX').setAttribute('value', position.toArray()[0]);
                 document.getElementById('annotationCoordinateY').setAttribute('value', position.toArray()[1]);
                 document.getElementById('annotationCoordinateZ').setAttribute('value', position.toArray()[2]);
+
+				if (document.getElementById("annotationEdit") != null){
+					if (document.getElementById("annotationReset").disabled == true){
+						document.getElementById("annotationEdit").disabled = true;
+					}else{
+						document.getElementById("annotationEdit").disabled = false;
+					}	
+				}
             }	
 			return;
 		}
@@ -415,7 +426,7 @@ export class AnnotationTool extends THREE.EventDispatcher {
                 let scale = (15 / pr);
                 sphere.scale.set(scale, scale, scale);
             }
-		}	
+		}
 	}
 
 	render(){
