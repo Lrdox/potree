@@ -11,19 +11,17 @@
 <script src="../../libs/i18next/i18next.js"></script>
 <script src="../../libs/jquery/jquery-3.1.1.min.js"></script>
 
-
 <h3>Document</h3>
-<div id = 'aakkaa'>
-	<button>hi</button> <br/>
+<div id = 'ak'>
+	<button id = 'akbutton'>hi</button> <br/>
 </div>
 
-
 <script>
-	let element = $('#aakkaa');
-	let imgElement = document.createElement('img');
-	let pathToResource = '../../../Resources/';
+	let element = $('#ak');
+	let buttonElement = $('#akbutton');
+	let loadedElement = document.createElement('embed');
+	let pathToResource = '../../../../Resources/';
 
-	imgElement.id = 'image';
 	$(document).ready(() => {
 		console.log('Document Ready');
 		element.on('click',() => {
@@ -33,9 +31,9 @@
 				type: 'GET',
 				dataType: 'text',
 				success: (data) => {
-					imgElement.src = pathToResource.concat(data.replace('"','').replace('"',''));
-					imgElement.width = '500';
-					element.append(imgElement);
+					loadedElement.src = pathToResource.concat(data);
+					loadedElement.width = '100%';
+					element.append(loadedElement);
 				}
 			});
 		});
