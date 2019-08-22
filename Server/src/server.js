@@ -13,22 +13,40 @@ app.get('/',function(req,res){
 	res.send('ca marche po chef');
 });
 
-app.get('/boo/:pageDir',function(req,res){
+app.get('/boo/:param',function(req,res){
 	data = fs.readFileSync('../databaseSettings.json');
+	let param = req.params.param;
+	let checkIfQuery = (Object.keys(req.query)[0]);
+	
 	connectionSettings = JSON.parse(data).databaseConnection;
 	mariadb.createConnection(connectionSettings)
 	.then(conn => {
-		var query = 'SELECT CONCAT(folder_A.path, (SELECT folder.path FROM folder JOIN item ON folder.folder_id = item.file_directory WHERE folder.name = "' + req.params.pageDir + '")) AS directory FROM folder folder_A WHERE folder_A.folder_id = (SELECT parent_id FROM folder JOIN item ON folder.folder_id = item.file_directory WHERE folder.name = "' + req.params.pageDir + '");' ;
-		console.log(query);
-		conn.query(query)
-		.then (rows => {
-			res.send(rows[0].directory);
-			conn.end();
-		})
-		.catch (err => {
-			console.log('Request error:');
-			console.log(err);
-		});
+		if(checkIfQuery){
+			var dir = req.query.id;
+			var query = 'SELECT position_x,position_y,position_z,camera_target_x,camera_target_y,camera_target_z,camera_position_x,camera_position_y,camera_position_z FROM item WHERE item_id =' + dir + ';';
+			console.log(query);
+			conn.query(query)
+			.then (rows => {
+				res.send(rows);
+				conn.end();
+			})
+			.catch (err => {
+				console.log('Request error:');
+				console.log(err);
+			});
+		}else if (!checkIfQuery){
+			var query = 'SELECT item_A.file_directory FROM item item_A, item item_B, link WHERE item_A.item_id = link.result and item_B.item_id = link.item and item_B.name = "' + param + '";';
+			console.log(query);
+			conn.query(query)
+			.then (rows => {
+				res.sendFile(path.resolve(__dirname + "../../../Resources/" + rows[0].file_directory));
+				conn.end();
+			})
+			.catch (err => {
+				console.log('Request error:');
+				console.log(err);
+			});
+		}
 	})
 	.catch(err => {
 		console.log('Connection error:');

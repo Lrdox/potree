@@ -23,6 +23,7 @@ import {PromotionCube} from "./PromotionCube.js";
 import {OrbitControls} from "../navigation/OrbitControls.js";
 import {FirstPersonControls} from "../navigation/FirstPersonControls.js";
 import {EarthControls} from "../navigation/EarthControls.js";
+import {GameControls} from "../navigation/GameControls.js";
 import {DeviceOrientationControls} from "../navigation/DeviceOrientationControls.js";
 import { EventDispatcher } from "../EventDispatcher.js";
 
@@ -363,6 +364,8 @@ export class Viewer extends EventDispatcher{
 			return this.earthControls;
 		} else if (navigationMode === DeviceOrientationControls) {
 			return this.deviceControls;
+		} else if (navigationMode === GameControls) {
+			return this.gameControls;
 		} else {
 			return null;
 		}
@@ -977,6 +980,13 @@ export class Viewer extends EventDispatcher{
 			this.earthControls.addEventListener('end', this.enableAnnotations.bind(this));
 		}
 
+		{ //create Game Controls
+			this.gameControls = new GameControls(this);
+			this.gameControls.enabled = false;
+			this.gameControls.addEventListener('start', this.disableAnnotations.bind(this));
+			this.gameControls.addEventListener('end', this.enableAnnotations.bind(this));
+		}
+
 		{ // create DEVICE ORIENTATION CONTROLS
 			this.deviceControls = new DeviceOrientationControls(this);
 			this.deviceControls.enabled = false;
@@ -1010,6 +1020,7 @@ export class Viewer extends EventDispatcher{
         let renderSidebarArea = $('#potree_sidebar_container');
         let renderScrollbarArea = $('#potree_scrollbar_container');
         let isVisible = (renderArea.css('bottom') !== '0px');
+		renderScrollbarArea.css('z-index', '0');
 
         if (isVisible) {
             renderScrollbarArea.css('bottom', '-200px');
@@ -1045,8 +1056,8 @@ export class Viewer extends EventDispatcher{
                 scrollbarContainer.css('bottom', '0px');
 
                 $(() => {
-                    let scrollbar = new Scrollbar(this);
-                    scrollbar.init();
+					this.scrollbar = new Scrollbar(this);
+                    this.scrollbar.init();
                 });
             });
 

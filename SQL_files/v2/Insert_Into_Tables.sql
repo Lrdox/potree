@@ -1,14 +1,11 @@
-INSERT INTO folder VALUES (null, 'Witnesses','Witnesses/',1,null);
-INSERT INTO folder VALUES (null, 'Objects','Objects/',1,null);
-INSERT INTO folder VALUES (null, 'Images','Images/',2,2);
-INSERT INTO folder VALUES (null, 'Chat','catWitness.jpg',2,1);
-INSERT INTO folder VALUES (null, 'Text', 'Witness.txt',2,1);
-INSERT INTO folder VALUES (null, 'Os', 'bone.jpg',3,3);
+INSERT INTO game VALUES (null,1,'../../../Resources/');
 
-INSERT INTO item VALUES (null, 'Text',null,null,null,null,null,null,null,null,null,null,5);
-INSERT INTO item VALUES (null, 'Chat',1,null,null,null,null,null,null,null,null,null,4);
+INSERT INTO item VALUES (null, 'Text', 'Witnesses/Witness.txt',null,null,null,null,null,null,null,null,null,null,1);
+INSERT INTO item VALUES (null, 'Chat', 'Witnesses/catWitness.jpg',1,null,null,null,null,null,null,null,null,null,1);
 
+INSERT INTO type VALUES (null, 'Expertise',null,null,1);
 
+INSERT INTO link VALUES (null, 'Text', 2, 1, 1, 1);
 
 /*CREATE TABLE game (
 	game_id INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -44,6 +41,7 @@ CREATE TABLE type(
 CREATE TABLE link (
 	link_id INTEGER PRIMARY KEY AUTO_INCREMENT,
 	name VARCHAR(200) NOT NULL,
+	item INTEGER,
 	result INTEGER,
 	game_id INTEGER,
 	type_id INTEGER,

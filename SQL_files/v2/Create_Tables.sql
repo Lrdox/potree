@@ -32,10 +32,12 @@ CREATE TABLE type(
 CREATE TABLE link (
 	link_id INTEGER PRIMARY KEY AUTO_INCREMENT,
 	name VARCHAR(200) NOT NULL,
+	item INTEGER,
 	result INTEGER,
 	game_id INTEGER,
 	type_id INTEGER,
 	FOREIGN KEY (type_id) REFERENCES type(type_id),
 	FOREIGN KEY (game_id) REFERENCES game(game_id),
-	FOREIGN KEY (result) REFERENCES item(item_id)
+	FOREIGN KEY (result) REFERENCES item(item_id),
+	FOREIGN KEY (item) REFERENCES item(item_id)
 );

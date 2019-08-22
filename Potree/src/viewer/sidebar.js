@@ -18,6 +18,7 @@ import {ScreenBoxSelectTool} from "../utils/ScreenBoxSelectTool.js"
 import {Utils} from "../utils.js"
 
 import {EarthControls} from "../navigation/EarthControls.js"
+import {GameControls} from "../navigation/GameControls.js"
 import {FirstPersonControls} from "../navigation/FirstPersonControls.js"
 import {OrbitControls} from "../navigation/OrbitControls.js"
 
@@ -1156,6 +1157,12 @@ export class Sidebar{
 			Potree.resourcePath + '/icons/earth_controls_1.png',
 			'[title]tt.earth_control',
 			() => { this.viewer.setNavigationMode(EarthControls); }
+		));
+
+		elNavigation.append(this.createToolIcon(
+			Potree.resourcePath + '/icons/rgb.png',
+			'[title]tt.earth_control',
+			() => { this.viewer.setNavigationMode(GameControls); }
 		));
 
 		elNavigation.append(this.createToolIcon(

@@ -37,6 +37,8 @@ export class Scene extends EventDispatcher {
         this.deviceControls = null;
         this.inputHandler = null;
 
+		this.gameControls = null;
+
         this.view = new View();
 
         this.directionalLight = null;
@@ -335,5 +337,5 @@ export class Scene extends EventDispatcher {
         document.getElementById("annotationName").value = annotation._title;
         document.getElementById("annotationDescription").value = annotation._description;
         this.annotations.edit(annotation);
-    }    
+    }
 }

@@ -31,7 +31,7 @@ export function addAnnotToTree(){
         annotationTool.startInsertion({
             closed: true,
             maxMarkers: 1,
-            position: inputPos,
+            position: [parseFloat(inputPos[0])+0.000000000001, parseFloat(inputPos[1])+0.000000000001, parseFloat(inputPos[2])+0.000000000001],
             cameraPosition: camPos,
             cameraTarget: camTar,
             title: name,
@@ -230,7 +230,7 @@ export class AnnotationMeasure extends THREE.Object3D {
 
 		let event = {
 			type: 'marker_moved',
-			measure:	this,
+			measure: this,
             index: index,
             position: point.position.clone()
 		};

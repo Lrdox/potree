@@ -20,22 +20,15 @@
 	let element = $('#ak');
 	let buttonElement = $('#akbutton');
 	let loadedElement = document.createElement('embed');
-	let pathToResource = '../../../../Resources/';
 
 	$(document).ready(() => {
 		console.log('Document Ready');
 		element.on('click',() => {
 			console.log('Element clicked');
-			$.ajax({
-				url: '/boo/chat',
-				type: 'GET',
-				dataType: 'text',
-				success: (data) => {
-					loadedElement.src = pathToResource.concat(data);
-					loadedElement.width = '100%';
-					element.append(loadedElement);
-				}
-			});
+			loadedElement.src = '/boo/chat';
+			loadedElement.width = '100%';
+			element.append(loadedElement);
+			console.log(loadedElement);
 		});
 	});
 </script>
