@@ -1,41 +1,60 @@
 {
 	"Annotations": [
 		{
-			"name": "Test Annotation",
+			"name": "Parapluie",
 			"coordinates": [
-				8.8898,
-				2.3864,
-				1.7288
-			],
-			"description": "Click on the annotation label to move a predefined view.\n\t\t\t\t\t\tClick on the icon to execute the specified action.\n\t\t\t\t\t\tIn this case, the action will bring you to another scene and point cloud.",
-			"cameraPosition": {
-				"x": 113.897,
-				"y": -43.579,
-				"z": 10.819
-			},
-			"cameraTarget": {
-				"x": 88.306,
-				"y": -34.481,
-				"z": 11.357
-			}
-		},
-		{
-			"name": "No Title",
-			"coordinates": [
-				-0.7557249961853021,
-				-19.840925,
-				2.7698348931884764
+				1.8130750061998846,
+				0.5102250023851854,
+				-42.594600023364016
 			],
 			"description": "",
 			"cameraPosition": {
-				"x": 90.258,
-				"y": -35.175,
-				"z": 11.316
+				"x": -0.4711485689551521,
+				"y": 0.9642796405605881,
+				"z": -41.80158542714902
 			},
 			"cameraTarget": {
-				"x": 88.306,
-				"y": -34.481,
-				"z": 11.357
+				"x": -0.46769350873643023,
+				"y": 0.9615723418118935,
+				"z": -41.80324462335793
+			}
+		},
+		{
+			"name": "Tasse",
+			"coordinates": [
+				-0.06201874809165107,
+				1.1125999980936516,
+				-42.27188124913473
+			],
+			"description": "",
+			"cameraPosition": {
+				"x": -0.042978932286130846,
+				"y": 0.5365771904208398,
+				"z": -42.091947661561335
+			},
+			"cameraTarget": {
+				"x": -0.009749692902740033,
+				"y": 0.725937269590419,
+				"z": -42.17173918951856
+			}
+		},
+		{
+			"name": "Pièce ID",
+			"coordinates": [
+				-1.016424993323279,
+				-0.5495250081052317,
+				-42.501600028609225
+			],
+			"description": "",
+			"cameraPosition": {
+				"x": 1.3135239275955681,
+				"y": -0.5737131900905573,
+				"z": -40.90926515381219
+			},
+			"cameraTarget": {
+				"x": -0.3185042348809164,
+				"y": 0.4549750378072951,
+				"z": -41.60342505691628
 			}
 		}
 	]

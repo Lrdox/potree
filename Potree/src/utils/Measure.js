@@ -19,7 +19,7 @@ export class Measure extends THREE.Object3D {
 		this._showHeight = false;
 		this.maxMarkers = Number.MAX_SAFE_INTEGER;
 
-		this.sphereGeometry = new THREE.SphereGeometry(0.4, 10, 10);
+		this.sphereGeometry = new THREE.SphereGeometry(0.5, 10, 10);
 		this.color = new THREE.Color(0xff0000);
 
 		this.lengthUnit = {code: 'cm'};

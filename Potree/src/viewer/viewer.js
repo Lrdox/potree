@@ -10,6 +10,7 @@ import {ClippingTool} from "../utils/ClippingTool.js";
 import {TransformationTool} from "../utils/TransformationTool.js";
 import {Utils} from "../utils.js";
 import {MapView} from "./map.js";
+import {ItemArea} from "./itemArea.js";
 import {ProfileWindow, ProfileWindowController} from "./profile.js";
 import {BoxVolume} from "../utils/Volume.js";
 import {Features} from "../Features.js";
@@ -59,6 +60,19 @@ export class Viewer extends EventDispatcher{
 					</div>
 				`);
 				$(domElement).append(potreeMap);
+			}
+
+			if ($(domElement).find('#potree_itemArea').length === 0){
+				let potreeItemArea = $(`
+					<div id="potree_itemArea" class="mapBox" style="position:absolute; left: 50px; top: 50px; width: 400px; height: 400px; display: none">
+						<div id="potree_itemArea_header" style="position: absolute; width: 100%; height: 25px; top: 0px; background-color: rgba(0,0,0,0.5); z-index: 1000; border-top-left-radius: 3px; border-top-right-radius: 3px;">
+						</div>
+						<div id="itemPageContainer" style="position: absolute; z-index: 100; top: 25px; width: 100%; height: calc(100% - 25px); border: 2px solid rgba(0,255,0,0.5); box-sizing: border-box;>
+							<embed  src="./description.html" />
+						</div>
+					</div>
+				`);
+				$(domElement).append(potreeItemArea);
 			}
 
 			if ($(domElement).find('#potree_description').length === 0) {
@@ -1006,6 +1020,12 @@ export class Viewer extends EventDispatcher{
 		}
 	};
 
+	toggleItemArea () {
+		if (this.itemArea){
+			this.itemArea.toggle();
+		}
+	}
+
 	toggleMap () {
 		// let map = $('#potree_map');
 		// map.toggle(100);
@@ -1077,6 +1097,9 @@ export class Viewer extends EventDispatcher{
 
 			this.mapView = new MapView(this);
             this.mapView.init();
+
+			this.itemArea = new ItemArea(this);
+			this.itemArea.init();
 
 			i18n.init({
 				lng: 'en',
