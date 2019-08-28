@@ -2,6 +2,7 @@
 export class ItemArea {
 	constructor(viewer){
 		this.viewer = viewer;
+		this.enabled = false;
 
 		this.elItemArea = null;
 	}
@@ -20,5 +21,15 @@ export class ItemArea {
 			this.elItemArea.css('display', 'block');
 			this.enabled = true;
 		}
+		this.update();
+	}
+
+	includeContent(id,file) {
+		var element = $("#"+id);
+		element.load(Potree.scriptPath+file);
+	}
+
+	update () {
+		return false;
 	}
 }

@@ -152,6 +152,18 @@
 	width:			2.5em;
 	height:			2.5em;
 	z-index:		100;
+	top:			calc(5em + 8px);
+	cursor: 		pointer;
+}
+
+#potree_itemArea_toggle{
+	position:		absolute;
+	float:			left;
+	margin:			8px 8px;
+	background:		none;
+	width:			2.5em;
+	height:			2.5em;
+	z-index:		100;
 	top:			calc(2.5em + 8px);
 	cursor: 		pointer;
 }

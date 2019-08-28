@@ -67,8 +67,8 @@ export class Viewer extends EventDispatcher{
 					<div id="potree_itemArea" class="mapBox" style="position:absolute; left: 50px; top: 50px; width: 400px; height: 400px; display: none">
 						<div id="potree_itemArea_header" style="position: absolute; width: 100%; height: 25px; top: 0px; background-color: rgba(0,0,0,0.5); z-index: 1000; border-top-left-radius: 3px; border-top-right-radius: 3px;">
 						</div>
-						<div id="itemPageContainer" style="position: absolute; z-index: 100; top: 25px; width: 100%; height: calc(100% - 25px); border: 2px solid rgba(0,255,0,0.5); box-sizing: border-box;>
-							<embed  src="./description.html" />
+						<div id="itemPageContainer" style="position: absolute; z-index: 100; top: 25px; width: 100%; height: calc(100% - 25px); border: 2px solid rgba(0,255,0,0.5); box-sizing: border-box; background-color:white">
+							<div id="includedContent"/>
 						</div>
 					</div>
 				`);
@@ -1092,7 +1092,13 @@ export class Viewer extends EventDispatcher{
 			imgMapToggle.onclick = e => { this.toggleMap(); };
             imgMapToggle.id = 'potree_map_toggle';
 
+			let imgItemAreaToggle = document.createElement('img');
+			imgItemAreaToggle.src = new URL(Potree.resourcePath + '/icons/rgb_elevation.png').href;
+			imgItemAreaToggle.onclick = e => { this.toggleItemArea(); };
+			imgItemAreaToggle.id = 'potree_itemArea_toggle';
+
             viewer.renderArea.insertBefore(imgMapToggle, viewer.renderArea.children[0]);
+			viewer.renderArea.insertBefore(imgItemAreaToggle, viewer.renderArea.children[0]);
             viewer.renderArea.insertBefore(imgMenuToggle, viewer.renderArea.children[0]);
 
 			this.mapView = new MapView(this);

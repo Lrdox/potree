@@ -33,11 +33,13 @@
 		"background_white": "White",
 		"background_none": "None",
 		
+		"point_quality": "Quality",
+		"clip_mode": "Intersection mode",
 		"octree": "Octree",
 		"move_speed": "Speed",
-		"skybox": "Sky",
 		"bottom_lock": "Keep above ground",
 		"min_node_size": "Min node size",
+		"skybox": "Sky",
 		"box": "Box",
 		"freeze": "Lock view"
 	},
@@ -68,9 +70,6 @@
 		"screen_clip_msg": "Requires you to be in orthographic camera mode.",
 
 		"navigation": "Navigation",													   
-		"clip_plane_x": "Clip plane on x axis",
-		"clip_plane_y": "Clip plane on y axis",
-		"clip_plane_z": "Clip plane on z axis",
 		"left_view_control": "Left view",
 		"right_view_control": "Right view",
 		"front_view_control": "Front view",
@@ -92,6 +91,13 @@
 		"units_centimeter": "Centimeter (cm)",
 		"units_foot": "Foot (ft)",
 		"units_inch": "Inch (in)"
+	},
+		"annotations": {
+		"add_annotation": "Add an annotation",
+		"annotation_name": "Annotation name",
+		"annotation_description": "Description",
+		"annotation_creation": "Save",
+		"annotation_coordinates": "Coordinates"
 	},
 		"scene": {
 		"objects": "Objects",
@@ -150,14 +156,6 @@
 		"elevation_range": "Elevation range",
 		"gradient_scheme": "Gradient scheme"
 	},
-	"measurements": {
-		"clip": "clip",
-		"show": "show volume"
-	},
-	"annotations": {
-		"show3D": "show in 3D",
-		"showMap": "show on map"
-	}, 
 	"profile": {
 		"nb_points": "Number of Points",
 		"title": "Height profile",
@@ -166,13 +164,6 @@
 		"save_ortho": "Save CSV(2D)",
 		"attribute_color": "RGBA",
 		"attribute_mileage": "mileage"
-	},
-	"filters": {
-		"return_number": "Return Number",
-		"number_of_returns": "Number of Returns",
-		"gps_min": "min",
-		"gps_max": "max",
-		"gps_time": "GPS Time"
 	},
 	"settings": {
 		"language": "Language"

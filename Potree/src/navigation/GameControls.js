@@ -14,9 +14,9 @@ export class GameControls extends EventDispatcher {
 
 		this.fadeFactor = 20;
 
-		this.targetX = 3;
-		this.targetY = 0;
-		this.targetZ = 0;
+		this.targetX = -1.45;
+		this.targetY = 0.5;
+		this.targetZ = -42.5;
 		this.url = "/boo/asd?id=1";
 		let onMouseDown = e => {
 			let I = Utils.getMousePointCloudIntersection(
@@ -37,6 +37,8 @@ export class GameControls extends EventDispatcher {
 					}
 				});
 				//this.pivot = I.location;
+				this.viewer.scrollbar.listRoot.append(this.viewer.scrollbar.addListItem("/witnesses/catWitness.jpg",1));
+				this.viewer.scrollbar.eventHandle(1);
 				this.camStart = this.scene.getActiveCamera().clone();
 			}
 		};

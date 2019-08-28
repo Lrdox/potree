@@ -95,7 +95,6 @@
 	"annotations": {
 		"add_annotation": "Ajout d'une annotation",
 		"annotation_name": "Nom de l'annotation",
-		"annotation_setting": "Propriétés de l'annotation",
 		"annotation_description": "Description",
 		"annotation_creation": "Sauvegarder",
 		"annotation_coordinates": "Coordonnées"
