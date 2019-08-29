@@ -16,14 +16,14 @@ app.get('/',function(req,res){
 app.get('/boo/:param',function(req,res){
 	data = fs.readFileSync('../databaseSettings.json');
 	let param = req.params.param;
-	let checkIfQuery = (Object.keys(req.query)[0]);
+	let queryCheck = (Object.keys(req.query)[0]);
 	
 	connectionSettings = JSON.parse(data).databaseConnection;
 	mariadb.createConnection(connectionSettings)
 	.then(conn => {
-		if(checkIfQuery){
+		if(queryCheck){
 			var dir = req.query.id;
-			var query = 'SELECT position_x,position_y,position_z,camera_target_x,camera_target_y,camera_target_z,camera_position_x,camera_position_y,camera_position_z FROM item WHERE item_id =' + dir + ';';
+			var query = 'SELECT file_directory FROM item WHERE item_id =' + dir + ';';
 			console.log(query);
 			conn.query(query)
 			.then (rows => {
@@ -34,7 +34,7 @@ app.get('/boo/:param',function(req,res){
 				console.log('Request error:');
 				console.log(err);
 			});
-		}else if (!checkIfQuery){
+		}else if (!queryCheck){
 			var query = 'SELECT item_A.file_directory FROM item item_A, item item_B, link WHERE item_A.item_id = link.result and item_B.item_id = link.item and item_B.name = "' + param + '";';
 			console.log(query);
 			conn.query(query)

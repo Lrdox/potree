@@ -85,6 +85,7 @@
 		"perspective_camera_control": "Perspective",
 		"orthographic_camera_control": "Orthographic",
 		"navigation_cube_control": "Navigation cube",
+		"magnifier": "Choose an object from the scene",
 		
 		"units": "Length unit",
 		"units_meter": "Meter (m)",

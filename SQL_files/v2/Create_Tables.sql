@@ -18,6 +18,7 @@ CREATE TABLE item (
 	camera_position_y FLOAT,
 	camera_position_z FLOAT,
 	game_id INTEGER,
+	player_type INTEGER, /*0 is lowest, -1 is init*/
 	FOREIGN KEY (game_id) REFERENCES game(game_id),
 	FOREIGN KEY (description) REFERENCES item(item_id)
 );

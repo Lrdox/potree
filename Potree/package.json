@@ -12,7 +12,6 @@
     "http": "0.0.0",
     "mariadb": "^2.1.0",
     "requirejs": "^2.3.6",
-    "sqlite": "^3.0.3",
     "through": "~2.3.4"
   },
   "author": "Markus Schütz",

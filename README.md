@@ -11,6 +11,11 @@ This version based on Potree 1.6. It includes the following additions:
 * Added Translation and documentation for future use (French and English only)
 * Bottom Scrollbar for Witness List, can be used for anything though
 
+### Database
+
+* To launch the database type "mysqld.exe --console" in the command line when in MariaDB/bin
+* When you download the project, open the my.ini file in MariaDB/data and adapt the directory
+
 ## README (Original Potree)
 
 * [Getting Started](./docs/getting_started.md)

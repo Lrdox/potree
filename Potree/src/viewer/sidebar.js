@@ -1018,8 +1018,15 @@ export class Sidebar{
 	}
 	
 	initAnnotationTools () {
-		
-		let elAnnotationTools = $('#annotationButton');
+
+		let elAnnotationTools = $('#annotations_div');
+		elAnnotationTools.append(this.createToolIcon(
+			Potree.resourcePath + '/icons/magnifier.jpg',
+			'[title]tt.magnifier',
+			() => { this.viewer.setNavigationMode(GameControls); }
+		));
+
+		elAnnotationTools = $('#annotationButton');
 		elAnnotationTools.append(this.createToolIcon(
 			Potree.resourcePath + '/icons/annotation.svg',
 			'[title]annotations.add_annotation'));
@@ -1157,12 +1164,6 @@ export class Sidebar{
 			Potree.resourcePath + '/icons/earth_controls_1.png',
 			'[title]tt.earth_control',
 			() => { this.viewer.setNavigationMode(EarthControls); }
-		));
-
-		elNavigation.append(this.createToolIcon(
-			Potree.resourcePath + '/icons/rgb.png',
-			'[title]tt.earth_control',
-			() => { this.viewer.setNavigationMode(GameControls); }
 		));
 
 		elNavigation.append(this.createToolIcon(
