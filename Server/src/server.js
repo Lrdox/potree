@@ -10,7 +10,7 @@ var app = express();
 app.use(express.static(path.dirname(module.parent.id)));
 
 app.get('/',function(req,res){
-	res.send('ca marche po chef');
+	res.send('Erreur');
 });
 
 app.get('/boo/:param',function(req,res){
